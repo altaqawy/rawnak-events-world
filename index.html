@@ -154,12 +154,16 @@
     @media(prefers-reduced-motion:reduce){
       *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
     }
-  </style>
+  #cloudPassage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 60% 58%,rgba(255,251,246,.96),rgba(230,237,243,.38) 54%,transparent 83%);transition:opacity .1s linear}
+    .scene-wash{opacity:.56}
+    .journey-stage:before{background:linear-gradient(90deg,rgba(5,13,21,.65),rgba(5,13,21,.17) 45%,transparent 75%),linear-gradient(0deg,rgba(5,13,21,.42),transparent 37%)}
+    </style>
 </head>
 <body>
   <div class="fallback" aria-hidden="true"></div>
   <canvas id="scene-canvas" aria-hidden="true"></canvas>
   <div class="scene-wash" aria-hidden="true"></div>
+  <div id="cloudPassage" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
 
   <div class="loader" id="loader">
@@ -295,13 +299,12 @@
     function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
     function smoothstep(a,b,x){const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);}
 
+    const islandCenters=[[-5,0],[7,-27],[-6,-55],[7,-84],[0,-116],[-8,-149],[7,-178],[-6,-207],[0,-237]];
+    const featureCenters=[[.2,-.5],[12,-27.5],[-.8,-55.5],[1.8,-84.5],[6.2,-116.5],[-13.2,-149.5],[12.2,-178.5],[-11.2,-207.5],[5.2,-237.5]];
+    const islandRadii=[10,11,11,11,15,12,11,12,13];
     function buildFallbackPath(){
-      const pts = [
-        [0,4.7,10],[0.25,4.8,-10],[0.5,4.9,-37],[-0.35,4.7,-65],
-        [0.35,5.0,-94],[-0.45,5.1,-124],[0.45,4.8,-153],
-        [-0.25,5.0,-182],[0.35,5.0,-211],[0,5.2,-224]
-      ].map(p=>new THREE.Vector3(...p));
-      pathCurve = new THREE.CatmullRomCurve3(pts,false,'catmullrom',0.22);
+      const pts=[[-5,6],...islandCenters,[0,-244]].map(([x,z])=>new THREE.Vector3(x,.08,z));
+      pathCurve=new THREE.CatmullRomCurve3(pts,false,'catmullrom',.5);
     }
 
     async function loadCameraPath(){
@@ -342,26 +345,35 @@
 
     function addAtmosphere(){
       const cloudTex=makeCloudTexture();
-      const cloudMat=new THREE.SpriteMaterial({map:cloudTex,color:0xeaf3f6,transparent:true,opacity:.18,depthWrite:false});
-      for(let i=0;i<9;i++){
-        const z=-i*29.5;
-        for(const side of [-1,1]){
-          const sprite=new THREE.Sprite(cloudMat.clone());
-          sprite.position.set(side*(10.5+(i%3)*1.2),-2.4+(i%2)*.5,z-9);
-          sprite.scale.set(17+(i%3)*2,7+(i%2)*1.2,1);
-          sprite.material.opacity=.11+(i%3)*.025;
-          scene.add(sprite);cloudSprites.push(sprite);
-        }
+      const cloudMat=new THREE.SpriteMaterial({map:cloudTex,color:0xfff4e8,transparent:true,opacity:.64,depthWrite:false});
+      function puff(x,y,z,w,h,opacity,phase){
+        const s=new THREE.Sprite(cloudMat.clone());
+        s.position.set(x,y,z);s.scale.set(w,h,1);s.material.opacity=opacity;
+        s.userData={x,y,z,opacity,phase};scene.add(s);cloudSprites.push(s);
       }
+      islandCenters.forEach(([x,z],i)=>{
+        const rad=islandRadii[i];
+        for(const side of [-1,1]){
+          for(let k=0;k<(isMobile?2:4);k++){
+            puff(x+side*(rad+2+k*2.2),-3.8-k*.9,z+(k-1.5)*6,21+k*3,8+k*.8,.47+k*.055,i*1.7+k+side);
+          }
+        }
+        puff(x,-10,z,rad*3.9,15,.78,i);
+        if(i<8){
+          const p=pathCurve.getPoint((i+1.5)/10);
+          puff(p.x-5,-1.3,p.z,13,5,.42,i+2);
+          puff(p.x+5,-1.2,p.z,13,5,.42,i+4);
+        }
+      });
       const petalTex=makePetalTexture();
       const petalMat=new THREE.SpriteMaterial({map:petalTex,color:0xf4c5d1,transparent:true,opacity:.72,depthWrite:false});
       const count=isMobile?36:92;
       for(let i=0;i<count;i++){
         const s=new THREE.Sprite(petalMat.clone());
-        s.position.set((Math.random()-.5)*22,1.8+Math.random()*7,-Math.random()*245+5);
-        const size=.12+Math.random()*.17;
+        const island=islandCenters[i%9],size=.05+Math.random()*.065;
+        s.position.set(island[0]+(Math.random()-.5)*18,1.8+Math.random()*7,island[1]+(Math.random()-.5)*15);
         s.scale.set(size*.75,size*1.4,1);
-        s.userData={speed:.25+Math.random()*.45,drift:(Math.random()-.5)*.22,phase:Math.random()*Math.PI*2};
+        s.userData={home:island,speed:.25+Math.random()*.45,drift:(Math.random()-.5)*.22,phase:Math.random()*Math.PI*2};
         scene.add(s);petalSprites.push(s);
       }
     }
@@ -388,25 +400,26 @@
 
     function enhanceModel(gltf){
       root=gltf.scene;
+      const proxy=/cloud|mist|fog|spray|haze|atmosphere|vapor/i;
+      const water=/waterfall|falling[ _-]*water/i;
+      const texture=makeWaterTexture();waterTextures.push(texture);
+      const waterMat=new THREE.MeshStandardMaterial({color:0xc7eaf4,map:texture,transparent:true,opacity:.83,roughness:.22,metalness:.08,side:THREE.DoubleSide,depthWrite:false});
+      let hidden=0;
       root.traverse(obj=>{
         if(!obj.isMesh)return;
         obj.castShadow=false;obj.receiveShadow=false;obj.frustumCulled=true;
-        const n=(obj.name||'').toLowerCase();
-        if(n.includes('rawnak_globalfog') || n.includes('globalfog_v2') || /cloud|mist|fog|spray/.test(n)){
-          obj.visible=false;
-          return;
+        const n=obj.name||'';
+        const mats=Array.isArray(obj.material)?obj.material:[obj.material];
+        const materialNames=mats.map(m=>m?.name||'').join(' ');
+        if(proxy.test(n)||proxy.test(materialNames)||/^(Edge[ _]|Far[ _]bank|Passage[ _])/i.test(n)){
+          obj.visible=false;hidden++;return;
         }
-        if(n.includes('waterfall') || n.includes('falling water')){
-          const tex=makeWaterTexture();waterTextures.push(tex);
-          obj.material=new THREE.MeshPhysicalMaterial({
-            color:0xc7eaf4,map:tex,transparent:true,opacity:.74,
-            roughness:.14,metalness:.04,transmission:.08,thickness:.15,
-            side:THREE.DoubleSide,depthWrite:false
-          });
-          obj.renderOrder=3;
+        if(water.test(n)||water.test(materialNames)){
+          obj.material=waterMat;obj.renderOrder=3;
         }
       });
       scene.add(root);
+      console.info('RAWNAK: hidden atmosphere proxy meshes',hidden);
       if(gltf.animations && gltf.animations.length){
         mixer=new THREE.AnimationMixer(root);
         gltf.animations.forEach(clip=>mixer.clipAction(clip).play());
@@ -416,33 +429,44 @@
 
     function updateCamera(t,delta){
       if(!pathCurve)return;
-      const pos=pathCurve.getPointAt(t);
-      const next=pathCurve.getPointAt(Math.min(.9999,t+.014));
-      const alpha=reducedMotion?1:1-Math.exp(-delta*5.5);
-      camera.position.lerp(pos,alpha);
-      if(cameraSamples && cameraSamples.length>2){
-        const f=t*(cameraSamples.length-1);
-        const i=Math.min(cameraSamples.length-2,Math.floor(f));
-        const u=f-i;
-        const qa=cameraSamples[i].quaternion, qb=cameraSamples[i+1].quaternion;
-        const q1=new THREE.Quaternion(...qa), q2=new THREE.Quaternion(...qb);
-        camera.quaternion.slerp(q1.slerp(q2,u),alpha);
-        if(Number.isFinite(cameraSamples[i].fov) && Number.isFinite(cameraSamples[i+1].fov)){
-          const fovA=THREE.MathUtils.radToDeg(cameraSamples[i].fov);
-          const fovB=THREE.MathUtils.radToDeg(cameraSamples[i+1].fov);
-          camera.fov=THREE.MathUtils.lerp(fovA,fovB,u);
-          camera.updateProjectionMatrix();
-        }
-      }else{
-        const look=new THREE.Vector3(next.x,next.y-1.55,next.z);
-        camera.lookAt(look);
+      const alpha=reducedMotion?1:1-Math.exp(-delta*7);
+      const s=Math.min(8.999999,clamp(t,0,1)*9), j=Math.floor(s), phase=s-j;
+      let routeT=(j+.5+phase)/10;
+      if(j===0)routeT=phase*1.5/10;
+      // The same centreline as the Blender bridge: chapter midpoints align with islands.
+      const pos=pathCurve.getPoint(routeT);
+      const ahead=pathCurve.getPoint(Math.min(.999,routeT+.018));
+      pos.y+=2.6+(j===4?.8:0)*Math.sin(Math.PI*phase);
+      const look=ahead.clone();look.y+=2.0;
+      const [fx,fz]=featureCenters[j];
+      const feature=new THREE.Vector3(fx, j===8?4.7:1.8,fz);
+      const direction=ahead.clone().sub(pos);direction.y=0;direction.normalize();
+      const toFeature=feature.clone().sub(pos);
+      const weight=.65*Math.sin(Math.PI*phase)**2*smoothstep(0,3,toFeature.dot(direction));
+      look.lerp(feature,weight);
+      if(j===8&&phase>.68){
+        const w=smoothstep(.68,1,phase);
+        const end=new THREE.Vector3(30,29,-267);
+        pos.lerp(end,w);
+        look.lerp(new THREE.Vector3(0,3,-227),w);
       }
+      camera.position.lerp(pos,alpha);
+      const targetMatrix=new THREE.Matrix4().lookAt(camera.position,look,camera.up);
+      const q=new THREE.Quaternion().setFromRotationMatrix(targetMatrix);
+      camera.quaternion.slerp(q,alpha);
+      camera.fov=THREE.MathUtils.lerp(50,j===8?61:53,j===8?smoothstep(.68,1,phase):.3);
+      camera.updateProjectionMatrix();
+      const crossing=j<8?Math.pow(smoothstep(.72,.98,phase),2):0;
+      const entering=j>0?1-smoothstep(0,.21,phase):0;
+      $('cloudPassage').style.opacity=reducedMotion?'0':String(.44*Math.max(crossing,entering));
     }
 
     function updateJourneyUI(p){
       const segment=p*chapters.length;
       const index=Math.min(chapters.length-1,Math.floor(segment));
       const chapter=chapters[index];
+      if(updateJourneyUI.last===index){$('journeyProgress').style.width=(p*100)+'%';return;}
+      updateJourneyUI.last=index;
       $('chapterIndex').textContent=String(index+1).padStart(2,'0')+' / 09 — '+chapter.name.toUpperCase();
       $('chapterTitle').textContent=chapter.title;
       $('chapterDescription').textContent=chapter.description;
@@ -462,7 +486,7 @@
         b.appendChild(s);
         b.addEventListener('click',()=>{
           const max=journey.offsetHeight-innerHeight;
-          const top=journey.offsetTop+(max*(i+.12)/chapters.length);
+          const top=journey.offsetTop+(max*(i+.5)/chapters.length);
           window.scrollTo({top,behavior:reducedMotion?'auto':'smooth'});
         });
         rail.appendChild(b);
@@ -489,10 +513,14 @@
       renderer.setClearColor(0x0b1420,1);
 
       scene=new THREE.Scene();
-      scene.background=new THREE.Color(0x111f2d);
-      scene.fog=new THREE.FogExp2(0x111f2d,.00145);
+      const sky=document.createElement('canvas');sky.width=16;sky.height=512;
+      const skyCtx=sky.getContext('2d'),gradient=skyCtx.createLinearGradient(0,0,0,512);
+      gradient.addColorStop(0,'#718cae');gradient.addColorStop(.48,'#c8d7e6');gradient.addColorStop(.8,'#f4dfc4');gradient.addColorStop(1,'#e3d9cf');
+      skyCtx.fillStyle=gradient;skyCtx.fillRect(0,0,16,512);
+      const skyTex=new THREE.CanvasTexture(sky);skyTex.colorSpace=THREE.SRGBColorSpace;scene.background=skyTex;
+      scene.fog=new THREE.FogExp2(0xd4dce4,.007);
       camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,900);
-      camera.position.set(0,4.7,10);
+      camera.position.set(-5,2.68,6);
 
       scene.add(new THREE.HemisphereLight(0xdcecf5,0x26313a,1.65));
       const key=new THREE.DirectionalLight(0xffdfbd,2.35);key.position.set(-25,36,18);scene.add(key);
@@ -515,7 +543,7 @@
           $('loaderFill').style.width='100%';
           $('loader').classList.add('done');
           canvas.style.opacity='1';
-          loadCameraPath().then(()=>{});
+          // The verified Blender centreline is used until an exact camera export is available.
         },
         event=>{
           if(event.total) $('loaderFill').style.width=Math.round(event.loaded/event.total*88)+'%';
@@ -562,9 +590,9 @@
         s.position.y-=s.userData.speed*delta;
         s.position.x+=Math.sin(time+s.userData.phase)*s.userData.drift*delta;
         s.material.rotation+=delta*.16;
-        if(s.position.y<-.8){s.position.y=5+Math.random()*4;s.position.x=(Math.random()-.5)*22;}
+        if(s.position.y<-.8){s.position.y=5+Math.random()*4;s.position.x=s.userData.home[0]+(Math.random()-.5)*18;}
       }
-      for(const s of cloudSprites){s.material.opacity=.10+.025*Math.sin(time*.35+s.position.z*.02);}
+      for(const s of cloudSprites){const d=s.userData;s.material.opacity=d.opacity*(.92+.08*Math.sin(time*.22+d.phase));if(!reducedMotion)s.position.x=d.x+Math.sin(time*.14+d.phase)*.85;}
       renderer.render(scene,camera);
     }
 
