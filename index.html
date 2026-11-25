@@ -39,7 +39,7 @@ const $=id=>document.getElementById(id), clamp=(x,a,b)=>Math.max(a,Math.min(b,x)
 const sections=[...document.querySelectorAll(".chapter")],links=[...document.querySelectorAll("[data-nav]")],films=[$("film0"),$("film1")],reduced=matchMedia("(prefers-reduced-motion: reduce)");
 const manifest=new Map(),checked=new Map(),slotState=films.map(()=>({chapter:-1,ready:false,token:0}));let current=-1,phase=0,visibleSlot=-1,loadToken=0,raf=0,manifestReady=false;
 const menu=document.querySelector(".menu-toggle");menu.addEventListener("click",()=>{let open=$("nav").classList.toggle("open");menu.setAttribute("aria-expanded",String(open));});document.querySelectorAll(".nav a").forEach(a=>a.addEventListener("click",()=>{$("nav").classList.remove("open");menu.setAttribute("aria-expanded","false");}));
-function jump(i){const el=sections[clamp(i,0,8)];window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-document.querySelector("header").offsetHeight,behavior:reduced.matches?"auto":"smooth"});}
+function jump(i){const el=sections[clamp(i,0,8)];window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-document.querySelector("header").offsetHeight+16,behavior:reduced.matches?"auto":"smooth"});}
 $("prev").onclick=()=>jump(current-1);$("next").onclick=()=>jump(current+1);
 function showStatus(s){$("mediaStatus").textContent=s;}
 function hideFilm(){films.forEach(v=>v.classList.remove("active"));visibleSlot=-1;}
@@ -54,7 +54,7 @@ async function loadChapter(i){
  slot=slotState[0].chapter===i?0:slotState[1].chapter===i?1:token%2;
  const v=films[slot],state=slotState[slot];state.chapter=i;state.ready=false;state.token=token;v.pause();v.onloadeddata=()=>{if(state.token!==token)return;state.ready=true;if(token!==loadToken||current!==i||reduced.matches)return;visibleSlot=slot;seek(slot,phase);v.classList.add("active");showStatus("CINEMATIC MODE");};v.onerror=()=>{if(token===loadToken&&current===i){hideFilm();showStatus("STORY MODE");}};v.src=src;v.load();
 }
-function update(){raf=0;const top=document.querySelector("header").getBoundingClientRect().height;const screenH=$("screen").clientHeight;const anchor=top+1;let i=sections.findIndex(el=>{let r=el.getBoundingClientRect();return r.top<=anchor&&r.bottom>anchor;});if(i<0)i=sections[0].getBoundingClientRect().top>anchor?0:8;
+function update(){raf=0;const top=document.querySelector("header").getBoundingClientRect().height;const screenH=$("screen").clientHeight;const anchor=top+24;let i=sections.findIndex(el=>{let r=el.getBoundingClientRect();return r.top<=anchor&&r.bottom>anchor;});if(i<0)i=sections[0].getBoundingClientRect().top>anchor?0:8;
  const r=sections[i].getBoundingClientRect();phase=clamp((top-r.top)/Math.max(1,screenH),0,1);
  if(i!==current){current=i;const c=chapters[i];$("screen").style.setProperty("--tone",c.tone);$("screen").style.setProperty("--light",c.light);$("bigNumber").textContent=String(i+1).padStart(2,"0");$("chapterCount").textContent=String(i+1).padStart(2,"0")+" / 09";links.forEach((a,j)=>a.setAttribute("aria-current",String(i===j)));$("prev").disabled=i===0;$("next").disabled=i===8;loadChapter(i);}
  if(visibleSlot>=0&&!reduced.matches)seek(visibleSlot,phase);
