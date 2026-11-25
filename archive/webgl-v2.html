@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1420">
+  <meta name="description" content="RAWNAK EVENTS — A lifetime of moments, thoughtfully designed.">
+  <title>RAWNAK EVENTS — A Lifetime of Moments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+  <style>
+    :root{
+      --night:#0b1420;--night-2:#101e2c;--ink:#f5f7f8;--muted:#b5c0c8;
+      --ice:#dcecf2;--sky:#80cfe1;--rose:#d9a5b4;--champagne:#d6b58b;
+      --burgundy:#7a233a;--line:rgba(229,240,245,.18);
+      --display:"Space Grotesk",sans-serif;--body:"Manrope",sans-serif;
+      --gutter:clamp(22px,6vw,96px);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--night)}
+    body{margin:0;background:var(--night);color:var(--ink);font-family:var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    ::selection{background:var(--sky);color:#08121b}
+    #scene-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity 900ms ease;pointer-events:none}
+    .scene-wash{position:fixed;inset:0;z-index:1;pointer-events:none;background:
+      linear-gradient(90deg,rgba(6,13,21,.84) 0%,rgba(6,13,21,.52) 37%,rgba(6,13,21,.06) 76%),
+      linear-gradient(180deg,rgba(6,13,21,.48) 0%,transparent 24%,transparent 65%,rgba(6,13,21,.55) 100%);
+      opacity:.9;transition:opacity .6s ease}
+    .grain{position:fixed;inset:0;z-index:15;pointer-events:none;opacity:.075;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.84' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E")}
+    .loader{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:#09131f;transition:opacity .7s ease,visibility .7s ease}
+    .loader.done{opacity:0;visibility:hidden}
+    .loader-inner{width:min(360px,76vw);text-align:center}
+    .loader-mark{width:42px;height:42px;border:1px solid rgba(220,236,242,.55);border-radius:50%;margin:0 auto 22px;display:grid;place-items:center;color:var(--ice);font:500 17px var(--display);animation:loaderPulse 1.8s ease-in-out infinite}
+    .loader-label{font:600 10px var(--display);letter-spacing:.25em;color:#c9d7df;text-transform:uppercase}
+    .loader-track{height:2px;background:rgba(255,255,255,.13);margin-top:18px;overflow:hidden}
+    .loader-fill{height:100%;width:0;background:linear-gradient(90deg,var(--sky),var(--champagne));transition:width .2s}
+    @keyframes loaderPulse{50%{box-shadow:0 0 35px rgba(128,207,225,.25);transform:scale(1.05)}}
+    .site-header{position:fixed;top:0;left:0;right:0;z-index:30;height:82px;padding:0 var(--gutter);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(230,240,245,.1);background:linear-gradient(180deg,rgba(8,17,27,.68),rgba(8,17,27,.05));backdrop-filter:blur(10px)}
+    .brand{display:flex;align-items:center;gap:12px;min-width:180px}
+    .brand-mark{width:39px;height:39px;border:1px solid rgba(220,236,242,.6);border-radius:50%;display:grid;place-items:center;color:var(--ice);font:500 18px var(--display);position:relative}
+    .brand-mark:after{content:"";position:absolute;inset:5px;border:1px solid rgba(128,207,225,.38);border-radius:50%}
+    .brand-name{font:700 15px var(--display);letter-spacing:.16em;line-height:1}
+    .brand-name small{display:block;font:500 8px var(--display);letter-spacing:.38em;color:#b8c8d0;margin-top:6px}
+    .nav-links{display:flex;align-items:center;gap:clamp(18px,3vw,42px)}
+    .nav-links a{font:600 9px var(--display);letter-spacing:.16em;text-transform:uppercase;color:#c0cbd2;transition:color .25s}
+    .nav-links a:hover{color:#fff}
+    .header-cta{border:1px solid rgba(220,236,242,.48);padding:12px 18px;font:600 9px var(--display);letter-spacing:.12em;text-transform:uppercase;transition:background .25s,color .25s,border .25s}
+    .header-cta:hover{background:var(--ice);color:#0b1420;border-color:var(--ice)}
+    .hero{position:relative;z-index:2;min-height:100svh;display:flex;align-items:center;padding:130px var(--gutter) 80px;isolation:isolate}
+    .hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(7,15,23,.68),rgba(7,15,23,.18) 70%,transparent)}
+    .hero-content{max-width:760px;position:relative}
+    .eyebrow{display:flex;align-items:center;gap:13px;color:var(--sky);font:600 10px var(--display);letter-spacing:.24em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:36px;height:1px;background:var(--sky);box-shadow:0 0 12px rgba(128,207,225,.65)}
+    h1{font:600 clamp(58px,8.7vw,132px)/.91 var(--display);letter-spacing:-.075em;text-transform:uppercase;margin:30px 0 24px;max-width:900px}
+    h1 span{display:block;color:#c5d6df}
+    .hero-copy{font-size:clamp(14px,1.15vw,17px);line-height:1.9;color:#c0cbd2;max-width:470px;margin:0 0 34px}
+    .hero-actions{display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+    .button-primary,.button-ghost{min-height:50px;padding:0 21px;display:inline-flex;align-items:center;gap:28px;font:700 9px var(--display);letter-spacing:.13em;text-transform:uppercase}
+    .button-primary{background:var(--ice);color:#0b1420;border:1px solid var(--ice)}
+    .button-primary:hover{background:#fff}
+    .button-ghost{border:1px solid rgba(220,236,242,.4);color:#eef4f6}
+    .button-ghost:hover{background:rgba(220,236,242,.1)}
+    .button-arrow{font-size:17px;line-height:1}
+    .hero-meta{position:absolute;left:var(--gutter);right:var(--gutter);bottom:32px;display:flex;justify-content:space-between;align-items:end;color:#9caeb8;font:600 9px var(--display);letter-spacing:.18em;text-transform:uppercase}
+    .scroll-cue{display:flex;align-items:center;gap:13px}
+    .scroll-cue i{display:block;width:1px;height:43px;background:linear-gradient(var(--sky),transparent);animation:cue 2s ease-in-out infinite}
+    @keyframes cue{50%{transform:scaleY(.5);transform-origin:top;opacity:.4}}
+    .journey{position:relative;height:900svh;z-index:2}
+    .journey-stage{position:sticky;top:0;height:100svh;overflow:hidden;isolation:isolate}
+    .journey-stage:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:
+      linear-gradient(90deg,rgba(5,13,21,.78),rgba(5,13,21,.24) 56%,rgba(5,13,21,.05)),
+      linear-gradient(0deg,rgba(5,13,21,.55),transparent 45%,rgba(5,13,21,.25))}
+    .journey-topline{position:absolute;top:108px;left:var(--gutter);right:var(--gutter);z-index:3;display:flex;justify-content:space-between;align-items:center;font:600 9px var(--display);letter-spacing:.19em;text-transform:uppercase;color:#b9c8d0}
+    .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#87d5c4;box-shadow:0 0 13px #87d5c4;margin-right:8px}
+    .chapter-copy{position:absolute;left:var(--gutter);bottom:clamp(76px,12vh,140px);z-index:3;width:min(530px,46vw);transition:opacity .35s,transform .5s}
+    .chapter-index{font:600 10px var(--display);letter-spacing:.2em;color:var(--champagne);text-transform:uppercase}
+    .chapter-copy h2{font:600 clamp(40px,5.1vw,78px)/.98 var(--display);letter-spacing:-.065em;text-transform:uppercase;margin:17px 0 18px}
+    .chapter-copy p{font-size:clamp(13px,1.05vw,15px);line-height:1.9;color:#c0cbd2;max-width:430px;margin:0 0 22px}
+    .chapter-tags{display:flex;gap:8px;flex-wrap:wrap}
+    .chapter-tags span{border:1px solid rgba(220,236,242,.24);padding:8px 10px;color:#c9d5dc;font:600 8px var(--display);letter-spacing:.13em;text-transform:uppercase}
+    .chapter-rail{position:absolute;right:var(--gutter);top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;gap:12px;align-items:center}
+    .chapter-dot{border:0;background:rgba(235,245,248,.3);width:4px;height:4px;border-radius:50%;padding:0;cursor:pointer;transition:height .3s,width .3s,background .3s,box-shadow .3s;position:relative}
+    .chapter-dot span{position:absolute;right:14px;top:50%;transform:translateY(-50%);font:600 8px var(--display);letter-spacing:.14em;color:#c4d0d7;opacity:0;transition:opacity .25s;white-space:nowrap;pointer-events:none}
+    .chapter-dot:hover span,.chapter-dot.active span{opacity:1}
+    .chapter-dot.active{width:5px;height:24px;border-radius:5px;background:var(--sky);box-shadow:0 0 15px rgba(128,207,225,.65)}
+    .journey-bottom{position:absolute;left:var(--gutter);right:var(--gutter);bottom:27px;z-index:3;display:flex;justify-content:space-between;align-items:center;color:#9fb0ba;font:600 8px var(--display);letter-spacing:.18em;text-transform:uppercase}
+    .journey-progress{width:min(180px,20vw);height:1px;background:rgba(220,236,242,.24);position:relative}
+    .journey-progress span{position:absolute;left:0;top:0;height:1px;width:0;background:var(--sky);box-shadow:0 0 9px var(--sky)}
+    .journey-steps{position:absolute;top:0;left:0;right:0;height:900svh;pointer-events:none;z-index:-1}
+    .journey-step{height:100svh}
+    .services{position:relative;z-index:4;background:#0c1723;padding:130px var(--gutter) 145px;border-top:1px solid var(--line)}
+    .section-kicker{color:var(--sky);font:600 9px var(--display);letter-spacing:.2em;text-transform:uppercase}
+    .services h2{font:600 clamp(40px,5vw,76px)/1 var(--display);letter-spacing:-.06em;text-transform:uppercase;max-width:820px;margin:18px 0 55px}
+    .service-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .service{padding:30px 28px 36px 0;border-right:1px solid var(--line);min-height:230px}
+    .service:first-child{padding-left:0}
+    .service:not(:first-child){padding-left:28px}
+    .service:last-child{border-right:0}
+    .service-no{font:600 9px var(--display);letter-spacing:.18em;color:var(--champagne)}
+    .service h3{font:600 22px var(--display);margin:30px 0 12px}
+    .service p{color:#aab8c0;font-size:12px;line-height:1.9;max-width:290px;margin:0}
+    .closing{position:relative;z-index:4;min-height:440px;background:linear-gradient(135deg,#122435,#0a121d 72%);padding:115px var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:40px;border-top:1px solid var(--line)}
+    .closing h2{font:600 clamp(42px,6vw,88px)/.98 var(--display);letter-spacing:-.07em;text-transform:uppercase;margin:15px 0;max-width:850px}
+    .closing p{color:#b8c6ce;font-size:14px;line-height:1.9;max-width:450px}
+    .closing-mark{width:150px;height:150px;flex:none;border:1px solid rgba(128,207,225,.32);border-radius:50%;display:grid;place-items:center;position:relative;color:var(--ice);font:500 34px var(--display)}
+    .closing-mark:before,.closing-mark:after{content:"";position:absolute;inset:12px;border:1px solid rgba(214,181,139,.3);border-radius:50%;transform:rotate(45deg) scaleX(.55)}
+    .closing-mark:after{transform:rotate(-45deg) scaleX(.55)}
+    footer{position:relative;z-index:4;background:#080f18;padding:28px var(--gutter);display:flex;justify-content:space-between;align-items:center;gap:20px;color:#8ea0ab;font:600 8px var(--display);letter-spacing:.16em;text-transform:uppercase}
+    footer a{color:#dbe8ed}
+    .fallback{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+      radial-gradient(ellipse at 70% 45%,rgba(115,161,177,.22),transparent 38%),
+      radial-gradient(ellipse at 20% 75%,rgba(122,35,58,.16),transparent 40%),
+      linear-gradient(135deg,#182c3e,#0a111a 70%)}
+    .webgl-error{position:fixed;left:var(--gutter);bottom:22px;z-index:20;color:#f2d5dc;font:600 9px var(--display);letter-spacing:.08em;display:none}
+    @media(max-width:900px){
+      .site-header{height:70px}.nav-links{gap:15px}.nav-links a{font-size:8px}.brand{min-width:auto}.header-cta{display:none}
+      .hero{padding-top:120px}.hero-content{max-width:650px}.chapter-copy{width:min(520px,70vw)}
+      .service-grid{grid-template-columns:1fr}.service{border-right:0;border-bottom:1px solid var(--line);padding:25px 0!important;min-height:auto}.service:last-child{border-bottom:0}
+      .closing{align-items:flex-start}.closing-mark{width:105px;height:105px}
+    }
+    @media(max-width:620px){
+      :root{--gutter:22px}
+      .site-header{height:64px}.brand-mark{width:34px;height:34px}.brand-name{font-size:13px}
+      .nav-links{gap:12px}.nav-links a{font-size:7px;letter-spacing:.08em}.nav-links a:nth-child(2),.nav-links a:nth-child(3){display:none}
+      .hero{min-height:100svh;padding:110px var(--gutter) 85px}.hero:before{background:linear-gradient(90deg,rgba(7,15,23,.72),rgba(7,15,23,.2)),linear-gradient(0deg,rgba(7,15,23,.4),transparent)}
+      h1{font-size:clamp(52px,15vw,82px);margin:24px 0 20px}
+      .hero-copy{font-size:13px;max-width:340px}
+      .hero-meta{bottom:20px}.hero-meta small{font-size:7px}
+      .journey{height:900svh}
+      .journey-topline{top:82px;font-size:7px}
+      .chapter-copy{left:var(--gutter);right:var(--gutter);bottom:88px;width:auto;max-width:440px}
+      .chapter-copy h2{font-size:clamp(36px,10vw,56px);margin:12px 0}
+      .chapter-copy p{font-size:12px;line-height:1.75;margin-bottom:14px}
+      .chapter-tags span{font-size:7px;padding:7px 8px}
+      .chapter-rail{right:17px;gap:10px;top:43%}
+      .chapter-dot span{display:none}
+      .journey-bottom{bottom:18px;font-size:7px}.journey-progress{width:90px}
+      .services{padding-top:85px;padding-bottom:90px}.services h2{margin-bottom:32px}
+      .service h3{margin-top:18px}
+      .closing{padding-top:80px;padding-bottom:85px;display:block}
+      .closing-mark{margin-top:30px}
+      footer{align-items:flex-start;flex-direction:column}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    }
+  #cloudPassage{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 60% 58%,rgba(255,251,246,.96),rgba(230,237,243,.38) 54%,transparent 83%);transition:opacity .1s linear}
+    .scene-wash{opacity:.56}
+    .journey-stage:before{background:linear-gradient(90deg,rgba(5,13,21,.65),rgba(5,13,21,.17) 45%,transparent 75%),linear-gradient(0deg,rgba(5,13,21,.42),transparent 37%)}
+    </style>
+</head>
+<body>
+  <div class="fallback" aria-hidden="true"></div>
+  <canvas id="scene-canvas" aria-hidden="true"></canvas>
+  <div class="scene-wash" aria-hidden="true"></div>
+  <div id="cloudPassage" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <div class="loader-mark">R</div>
+      <div class="loader-label">Preparing your experience</div>
+      <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
+    </div>
+  </div>
+  <div class="webgl-error" id="webglError">3D preview unavailable — the story remains accessible below.</div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Rawnak Events home">
+      <span class="brand-mark">R</span>
+      <span class="brand-name">RAWNAK<small>EVENTS</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#journey">The journey</a>
+      <a href="#services">What we create</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="header-cta" href="#contact">Plan a moment <span class="button-arrow">↗</span></a>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-content">
+        <div class="eyebrow">RAWNAK EVENTS / A LIFETIME OF MOMENTS</div>
+        <h1>A lifetime <span>of moments.</span></h1>
+        <p class="hero-copy">From the first hello to the moments that bring everyone together, we create thoughtful celebrations, meaningful gifts and experiences worth remembering.</p>
+        <div class="hero-actions">
+          <a class="button-primary" href="#journey">Begin the journey <span class="button-arrow">↘</span></a>
+          <a class="button-ghost" href="#services">Discover what we create <span class="button-arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="hero-meta">
+        <small>DESIGNED AROUND YOUR STORY</small>
+        <div class="scroll-cue"><small>SCROLL TO TRAVEL</small><i></i></div>
+        <small>01 — 09 / THE LIFE JOURNEY</small>
+      </div>
+    </section>
+
+    <section class="journey" id="journey" aria-label="A lifetime of moments">
+      <div class="journey-stage">
+        <div class="journey-topline">
+          <span><i class="live-dot"></i>THE RAWNAK LIFE JOURNEY</span>
+          <span id="sceneStatus">REAL-TIME 3D / LOADING</span>
+        </div>
+        <div class="chapter-copy" id="chapterCopy" aria-live="polite">
+          <div class="chapter-index" id="chapterIndex">01 / 09 — THE FIRST HELLO</div>
+          <h2 id="chapterTitle">The first hello.</h2>
+          <p id="chapterDescription">Every life begins with a moment worth welcoming. Thoughtful details make the beginning feel extraordinary.</p>
+          <div class="chapter-tags" id="chapterTags"></div>
+        </div>
+        <div class="chapter-rail" id="chapterRail" aria-label="Journey chapters"></div>
+        <div class="journey-bottom">
+          <span>SCROLL TO MOVE THROUGH THE STORY</span>
+          <span class="journey-progress"><span id="journeyProgress"></span></span>
+          <span id="chapterCounter">01 / 09</span>
+        </div>
+      </div>
+      <div class="journey-steps" aria-hidden="true">
+        <div class="journey-step"></div><div class="journey-step"></div><div class="journey-step"></div>
+        <div class="journey-step"></div><div class="journey-step"></div><div class="journey-step"></div>
+        <div class="journey-step"></div><div class="journey-step"></div><div class="journey-step"></div>
+      </div>
+    </section>
+
+    <section class="services" id="services">
+      <div class="section-kicker">BEYOND THE OCCASION</div>
+      <h2>One thoughtful partner.<br>Every meaningful detail.</h2>
+      <div class="service-grid">
+        <article class="service">
+          <div class="service-no">01 / EVENT DESIGN</div>
+          <h3>Events, thoughtfully made.</h3>
+          <p>From intimate celebrations to weddings and corporate gatherings, every space and detail is designed around the people and the occasion.</p>
+        </article>
+        <article class="service">
+          <div class="service-no">02 / PERSONAL GIFTING</div>
+          <h3>Gifts with a story.</h3>
+          <p>Curated, personalized and beautifully presented gifts for new beginnings, milestones, seasonal moments and the people who matter.</p>
+        </article>
+        <article class="service">
+          <div class="service-no">03 / EXPERIENCES</div>
+          <h3>More than a single day.</h3>
+          <p>A connected experience for individuals and organizations — from the first idea and preparation to the final detail and lasting memory.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing" id="contact">
+      <div>
+        <div class="section-kicker">LET'S MAKE IT MEANINGFUL</div>
+        <h2>Your next moment<br>starts with a thought.</h2>
+        <p>Tell us what you are celebrating, who it is for and how you want it to feel. We will help shape the details around your story.</p>
+        <a class="button-primary" href="https://rawnakgroup.com" target="_blank" rel="noopener noreferrer">Connect with Rawnak <span class="button-arrow">↗</span></a>
+      </div>
+      <div class="closing-mark" aria-hidden="true">R</div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> RAWNAK EVENTS</span>
+    <span>A LIFETIME OF MOMENTS</span>
+    <a href="#top">BACK TO THE BEGINNING ↑</a>
+  </footer>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    const chapters = [
+      {name:'The First Hello', title:'The first hello.', description:'Every life begins with a moment worth welcoming. Thoughtful details make the beginning feel extraordinary.', tags:['Newborn celebrations','Baby showers','Keepsakes']},
+      {name:'Little Wonders', title:'Little wonders.', description:'Make the small discoveries feel big. Playful celebrations and gifts turn childhood moments into stories families keep.', tags:['Children’s birthdays','Playful gifts','Themed moments']},
+      {name:'Dreams & Achievements', title:'Dreams take shape.', description:'Every milestone deserves to be seen. Celebrate progress, achievement and the next chapter with details that feel personal.', tags:['Graduations','Achievements','Milestones']},
+      {name:'Two Hearts', title:'Two hearts. One story.', description:'A proposal or engagement is more than an occasion. It is the beginning of a story, shaped around two people.', tags:['Proposals','Engagements','Intimate celebrations']},
+      {name:'Forever Begins', title:'Forever begins here.', description:'A wedding day should feel unmistakably yours. From the setting to the smallest detail, bring the vision together beautifully.', tags:['Weddings','Ceremony design','Full planning']},
+      {name:'The Art of Giving', title:'The art of giving.', description:'A meaningful gift says what words sometimes cannot. Curated, personalized and beautifully finished for the person receiving it.', tags:['Curated boxes','Personalized gifts','Seasonal gifting']},
+      {name:'Together Always', title:'Together, always.', description:'Bring the people who matter closer. Create room for family traditions, reunions and the moments that become part of your story.', tags:['Family gatherings','Anniversaries','Reunions']},
+      {name:'Extraordinary Gatherings', title:'Gather with purpose.', description:'A gathering can do more than bring people into one room. Design corporate events and brand experiences that leave a clear impression.', tags:['Corporate events','Launches','Brand experiences']},
+      {name:'The Tree of Life', title:'A lifetime, connected.', description:'The best relationships do not end when the event is over. Rawnak can be part of the milestones, gifts and celebrations that follow.', tags:['Life milestones','Thoughtful gifting','Long-term moments']}
+    ];
+
+    const $ = (id) => document.getElementById(id);
+    const canvas = $('scene-canvas');
+    const isMobile = matchMedia('(max-width: 700px)').matches;
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let renderer, scene, camera, root, mixer, waterTextures = [], petalSprites = [], cloudSprites = [];
+    let pathCurve, cameraSamples = null, targetProgress = 0, currentProgress = 0, lastTime = 0;
+    let loaded = false, webglAvailable = true, modelFailed = false;
+    const journey = $('journey');
+
+    function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+    function smoothstep(a,b,x){const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);}
+
+    const islandCenters=[[-5,0],[7,-27],[-6,-55],[7,-84],[0,-116],[-8,-149],[7,-178],[-6,-207],[0,-237]];
+    const featureCenters=[[.2,-.5],[12,-27.5],[-.8,-55.5],[1.8,-84.5],[6.2,-116.5],[-13.2,-149.5],[12.2,-178.5],[-11.2,-207.5],[5.2,-237.5]];
+    const islandRadii=[10,11,11,11,15,12,11,12,13];
+    function buildFallbackPath(){
+      const pts=[[-5,6],...islandCenters,[0,-244]].map(([x,z])=>new THREE.Vector3(x,.08,z));
+      pathCurve=new THREE.CatmullRomCurve3(pts,false,'catmullrom',.5);
+    }
+
+    async function loadCameraPath(){
+      try{
+        const res = await fetch('../assets/camera-path.json',{cache:'no-store'});
+        if(!res.ok) return;
+        const data = await res.json();
+        if(Array.isArray(data.samples) && data.samples.length > 2){
+          cameraSamples = data.samples;
+          const pts = data.samples.map(s=>new THREE.Vector3(...s.position));
+          pathCurve = new THREE.CatmullRomCurve3(pts,false,'catmullrom',0.12);
+        }
+      }catch(_){}
+    }
+
+    function makeCloudTexture(){
+      const c=document.createElement('canvas');c.width=256;c.height=128;
+      const ctx=c.getContext('2d');
+      const blobs=[[70,68,58],[112,49,64],[157,65,56],[193,73,42],[38,82,34]];
+      for(const [x,y,r] of blobs){
+        const g=ctx.createRadialGradient(x,y,2,x,y,r);
+        g.addColorStop(0,'rgba(247,251,255,.68)');
+        g.addColorStop(.45,'rgba(218,232,239,.34)');
+        g.addColorStop(1,'rgba(218,232,239,0)');
+        ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+      }
+      const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
+    }
+
+    function makePetalTexture(){
+      const c=document.createElement('canvas');c.width=128;c.height=128;
+      const ctx=c.getContext('2d');
+      const g=ctx.createRadialGradient(62,58,4,64,64,58);
+      g.addColorStop(0,'rgba(255,239,244,1)');g.addColorStop(.45,'rgba(232,174,192,.94)');g.addColorStop(1,'rgba(190,112,142,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(64,64,28,48,.35,0,Math.PI*2);ctx.fill();
+      const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
+    }
+
+    function addAtmosphere(){
+      const cloudTex=makeCloudTexture();
+      const cloudMat=new THREE.SpriteMaterial({map:cloudTex,color:0xfff4e8,transparent:true,opacity:.64,depthWrite:false});
+      function puff(x,y,z,w,h,opacity,phase){
+        const s=new THREE.Sprite(cloudMat.clone());
+        s.position.set(x,y,z);s.scale.set(w,h,1);s.material.opacity=opacity;
+        s.userData={x,y,z,opacity,phase};scene.add(s);cloudSprites.push(s);
+      }
+      islandCenters.forEach(([x,z],i)=>{
+        const rad=islandRadii[i];
+        for(const side of [-1,1]){
+          for(let k=0;k<(isMobile?2:4);k++){
+            puff(x+side*(rad+2+k*2.2),-3.8-k*.9,z+(k-1.5)*6,21+k*3,8+k*.8,.47+k*.055,i*1.7+k+side);
+          }
+        }
+        puff(x,-10,z,rad*3.9,15,.78,i);
+        if(i<8){
+          const p=pathCurve.getPoint((i+1.5)/10);
+          puff(p.x-5,-1.3,p.z,13,5,.42,i+2);
+          puff(p.x+5,-1.2,p.z,13,5,.42,i+4);
+        }
+      });
+      const petalTex=makePetalTexture();
+      const petalMat=new THREE.SpriteMaterial({map:petalTex,color:0xf4c5d1,transparent:true,opacity:.72,depthWrite:false});
+      const count=isMobile?36:92;
+      for(let i=0;i<count;i++){
+        const s=new THREE.Sprite(petalMat.clone());
+        const island=islandCenters[i%9],size=.05+Math.random()*.065;
+        s.position.set(island[0]+(Math.random()-.5)*18,1.8+Math.random()*7,island[1]+(Math.random()-.5)*15);
+        s.scale.set(size*.75,size*1.4,1);
+        s.userData={home:island,speed:.25+Math.random()*.45,drift:(Math.random()-.5)*.22,phase:Math.random()*Math.PI*2};
+        scene.add(s);petalSprites.push(s);
+      }
+    }
+
+    function makeWaterTexture(){
+      const c=document.createElement('canvas');c.width=128;c.height=512;
+      const ctx=c.getContext('2d');
+      const grad=ctx.createLinearGradient(0,0,0,512);
+      grad.addColorStop(0,'rgba(225,248,255,.06)');
+      grad.addColorStop(.18,'rgba(206,238,249,.7)');
+      grad.addColorStop(.72,'rgba(174,222,239,.52)');
+      grad.addColorStop(1,'rgba(224,246,255,.08)');
+      ctx.fillStyle=grad;ctx.fillRect(0,0,128,512);
+      for(let i=0;i<28;i++){
+        const x=Math.random()*128,w=1+Math.random()*3;
+        ctx.fillStyle=`rgba(255,255,255,${.08+Math.random()*.28})`;
+        ctx.fillRect(x,Math.random()*80,w,350+Math.random()*150);
+      }
+      const tex=new THREE.CanvasTexture(c);
+      tex.wrapT=THREE.RepeatWrapping;tex.wrapS=THREE.RepeatWrapping;tex.repeat.set(1,2);
+      tex.colorSpace=THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    function enhanceModel(gltf){
+      root=gltf.scene;
+      const proxy=/cloud|mist|fog|spray|haze|atmosphere|vapor/i;
+      const water=/waterfall|falling[ _-]*water/i;
+      const texture=makeWaterTexture();waterTextures.push(texture);
+      const waterMat=new THREE.MeshStandardMaterial({color:0xc7eaf4,map:texture,transparent:true,opacity:.83,roughness:.22,metalness:.08,side:THREE.DoubleSide,depthWrite:false});
+      let hidden=0;
+      root.traverse(obj=>{
+        if(!obj.isMesh)return;
+        obj.castShadow=false;obj.receiveShadow=false;obj.frustumCulled=true;
+        const n=obj.name||'';
+        const mats=Array.isArray(obj.material)?obj.material:[obj.material];
+        const materialNames=mats.map(m=>m?.name||'').join(' ');
+        if(proxy.test(n)||proxy.test(materialNames)||/^(Edge[ _]|Far[ _]bank|Passage[ _])/i.test(n)){
+          obj.visible=false;hidden++;return;
+        }
+        if(water.test(n)||water.test(materialNames)){
+          obj.material=waterMat;obj.renderOrder=3;
+        }
+      });
+      scene.add(root);
+      console.info('RAWNAK: hidden atmosphere proxy meshes',hidden);
+      if(gltf.animations && gltf.animations.length){
+        mixer=new THREE.AnimationMixer(root);
+        gltf.animations.forEach(clip=>mixer.clipAction(clip).play());
+        mixer.timeScale=.35;
+      }
+    }
+
+    function updateCamera(t,delta){
+      if(!pathCurve)return;
+      const alpha=reducedMotion?1:1-Math.exp(-delta*7);
+      const s=Math.min(8.999999,clamp(t,0,1)*9), j=Math.floor(s), phase=s-j;
+      let routeT=(j+.5+phase)/10;
+      if(j===0)routeT=phase*1.5/10;
+      // The same centreline as the Blender bridge: chapter midpoints align with islands.
+      const pos=pathCurve.getPoint(routeT);
+      const ahead=pathCurve.getPoint(Math.min(.999,routeT+.018));
+      pos.y+=2.6+(j===4?.8:0)*Math.sin(Math.PI*phase);
+      const look=ahead.clone();look.y+=2.0;
+      const [fx,fz]=featureCenters[j];
+      const feature=new THREE.Vector3(fx, j===8?4.7:1.8,fz);
+      const direction=ahead.clone().sub(pos);direction.y=0;direction.normalize();
+      const toFeature=feature.clone().sub(pos);
+      const weight=.65*Math.sin(Math.PI*phase)**2*smoothstep(0,3,toFeature.dot(direction));
+      look.lerp(feature,weight);
+      if(j===8&&phase>.68){
+        const w=smoothstep(.68,1,phase);
+        const end=new THREE.Vector3(30,29,-267);
+        pos.lerp(end,w);
+        look.lerp(new THREE.Vector3(0,3,-227),w);
+      }
+      camera.position.lerp(pos,alpha);
+      const targetMatrix=new THREE.Matrix4().lookAt(camera.position,look,camera.up);
+      const q=new THREE.Quaternion().setFromRotationMatrix(targetMatrix);
+      camera.quaternion.slerp(q,alpha);
+      camera.fov=THREE.MathUtils.lerp(50,j===8?61:53,j===8?smoothstep(.68,1,phase):.3);
+      camera.updateProjectionMatrix();
+      const crossing=j<8?Math.pow(smoothstep(.72,.98,phase),2):0;
+      const entering=j>0?1-smoothstep(0,.21,phase):0;
+      $('cloudPassage').style.opacity=reducedMotion?'0':String(.44*Math.max(crossing,entering));
+    }
+
+    function updateJourneyUI(p){
+      const segment=p*chapters.length;
+      const index=Math.min(chapters.length-1,Math.floor(segment));
+      const chapter=chapters[index];
+      if(updateJourneyUI.last===index){$('journeyProgress').style.width=(p*100)+'%';return;}
+      updateJourneyUI.last=index;
+      $('chapterIndex').textContent=String(index+1).padStart(2,'0')+' / 09 — '+chapter.name.toUpperCase();
+      $('chapterTitle').textContent=chapter.title;
+      $('chapterDescription').textContent=chapter.description;
+      $('chapterTags').innerHTML=chapter.tags.map(t=>`<span>${t}</span>`).join('');
+      $('chapterCounter').textContent=String(index+1).padStart(2,'0')+' / 09';
+      $('journeyProgress').style.width=(p*100)+'%';
+      document.querySelectorAll('.chapter-dot').forEach((dot,i)=>dot.classList.toggle('active',i===index));
+    }
+
+    function buildRail(){
+      const rail=$('chapterRail');
+      chapters.forEach((chapter,i)=>{
+        const b=document.createElement('button');
+        b.className='chapter-dot'+(i===0?' active':'');
+        b.type='button';b.setAttribute('aria-label',`Go to chapter ${i+1}: ${chapter.name}`);
+        const s=document.createElement('span');s.textContent=String(i+1).padStart(2,'0')+' / '+chapter.name.toUpperCase();
+        b.appendChild(s);
+        b.addEventListener('click',()=>{
+          const max=journey.offsetHeight-innerHeight;
+          const top=journey.offsetTop+(max*(i+.5)/chapters.length);
+          window.scrollTo({top,behavior:reducedMotion?'auto':'smooth'});
+        });
+        rail.appendChild(b);
+      });
+    }
+
+    function scrollProgress(){
+      const rect=journey.getBoundingClientRect();
+      const max=Math.max(1,journey.offsetHeight-innerHeight);
+      return clamp(-rect.top/max,0,1);
+    }
+
+    function initScene(){
+      try{
+        renderer=new THREE.WebGLRenderer({canvas,antialias:!isMobile,alpha:false,powerPreference:'high-performance'});
+      }catch(e){
+        webglAvailable=false;$('webglError').style.display='block';$('loader').classList.add('done');return;
+      }
+      renderer.setPixelRatio(Math.min(devicePixelRatio,isMobile?1:1.35));
+      renderer.setSize(innerWidth,innerHeight,false);
+      renderer.outputColorSpace=THREE.SRGBColorSpace;
+      renderer.toneMapping=THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure=1.18;
+      renderer.setClearColor(0x0b1420,1);
+
+      scene=new THREE.Scene();
+      const sky=document.createElement('canvas');sky.width=16;sky.height=512;
+      const skyCtx=sky.getContext('2d'),gradient=skyCtx.createLinearGradient(0,0,0,512);
+      gradient.addColorStop(0,'#718cae');gradient.addColorStop(.48,'#c8d7e6');gradient.addColorStop(.8,'#f4dfc4');gradient.addColorStop(1,'#e3d9cf');
+      skyCtx.fillStyle=gradient;skyCtx.fillRect(0,0,16,512);
+      const skyTex=new THREE.CanvasTexture(sky);skyTex.colorSpace=THREE.SRGBColorSpace;scene.background=skyTex;
+      scene.fog=new THREE.FogExp2(0xd4dce4,.007);
+      camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,900);
+      camera.position.set(-5,2.68,6);
+
+      scene.add(new THREE.HemisphereLight(0xdcecf5,0x26313a,1.65));
+      const key=new THREE.DirectionalLight(0xffdfbd,2.35);key.position.set(-25,36,18);scene.add(key);
+      const rim=new THREE.DirectionalLight(0x8ed9ec,1.15);rim.position.set(25,18,-150);scene.add(rim);
+      const fill=new THREE.PointLight(0xd7aab9,95,85,2);fill.position.set(0,8,-116);scene.add(fill);
+
+      buildFallbackPath();
+      addAtmosphere();
+      buildRail();
+
+      const loader=new GLTFLoader();
+      const modelPaths=['../Untitled.glb','../assets/rawnak-events-world.glb'];
+      function loadModel(index=0){
+      loader.load(
+        modelPaths[index],
+        gltf=>{
+          enhanceModel(gltf);
+          loaded=true;
+          $('sceneStatus').textContent='REAL-TIME 3D / 09 CHAPTERS';
+          $('loaderFill').style.width='100%';
+          $('loader').classList.add('done');
+          canvas.style.opacity='1';
+          // The verified Blender centreline is used until an exact camera export is available.
+        },
+        event=>{
+          if(event.total) $('loaderFill').style.width=Math.round(event.loaded/event.total*88)+'%';
+        },
+        error=>{
+          console.error('RAWNAK model failed to load',modelPaths[index],error);
+          if(index+1<modelPaths.length){loadModel(index+1);return;}
+          modelFailed=true;
+          $('sceneStatus').textContent='3D ASSET / LOAD FAILED';
+          $('webglError').textContent='3D world could not load. Please refresh or check the model file.';
+          $('webglError').style.display='block';
+          $('loader').classList.add('done');
+        }
+      );
+      }
+      loadModel();
+    }
+
+    function updateSceneVisibility(){
+      const heroRect=$('top').getBoundingClientRect();
+      const journeyRect=journey.getBoundingClientRect();
+      const visible=(heroRect.bottom>0 && heroRect.top<innerHeight) || (journeyRect.bottom>0 && journeyRect.top<innerHeight);
+      canvas.style.opacity=visible&&loaded?'1':'0';
+      $('sceneStatus').textContent=loaded?'REAL-TIME 3D / ENGINE ONLINE':modelFailed?'3D ASSET / LOAD FAILED':!webglAvailable?'WEBGL UNAVAILABLE':'REAL-TIME 3D / LOADING';
+    }
+
+    function animate(now){
+      requestAnimationFrame(animate);
+      const delta=Math.min(.05,(now-lastTime)/1000||0);lastTime=now;
+      if(!renderer || !scene || !camera)return;
+      const inJourney=journey.getBoundingClientRect().top<innerHeight && journey.getBoundingClientRect().bottom>0;
+      if(inJourney){
+        targetProgress=scrollProgress();
+        currentProgress=reducedMotion?targetProgress:THREE.MathUtils.damp(currentProgress,targetProgress,5.2,delta);
+        updateJourneyUI(currentProgress);
+        updateCamera(currentProgress,delta);
+      }else if($('top').getBoundingClientRect().bottom>0){
+        currentProgress=0;updateCamera(0,delta);
+      }
+      if(mixer)mixer.update(delta);
+      for(const tex of waterTextures)tex.offset.y=(tex.offset.y-delta*.42+1)%1;
+      const time=now*.001;
+      for(const s of petalSprites){
+        s.position.y-=s.userData.speed*delta;
+        s.position.x+=Math.sin(time+s.userData.phase)*s.userData.drift*delta;
+        s.material.rotation+=delta*.16;
+        if(s.position.y<-.8){s.position.y=5+Math.random()*4;s.position.x=s.userData.home[0]+(Math.random()-.5)*18;}
+      }
+      for(const s of cloudSprites){const d=s.userData;s.material.opacity=d.opacity*(.92+.08*Math.sin(time*.22+d.phase));if(!reducedMotion)s.position.x=d.x+Math.sin(time*.14+d.phase)*.85;}
+      renderer.render(scene,camera);
+    }
+
+    function onResize(){
+      if(!renderer||!camera)return;
+      camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(devicePixelRatio,isMobile?1:1.35));
+      renderer.setSize(innerWidth,innerHeight,false);
+    }
+
+    $('year').textContent=new Date().getFullYear();
+    initScene();
+    addEventListener('resize',onResize,{passive:true});
+    addEventListener('scroll',updateSceneVisibility,{passive:true});
+    updateSceneVisibility();
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
