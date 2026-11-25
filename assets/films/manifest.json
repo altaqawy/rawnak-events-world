@@ -1,0 +1,13 @@
+{
+  "chapters": {
+    "first-hello": "assets/films/first-hello.mp4",
+    "little-wonders": "assets/films/little-wonders.mp4",
+    "achievements": "assets/films/achievements.mp4",
+    "two-hearts": "assets/films/two-hearts.mp4",
+    "forever-begins": "assets/films/forever-begins.mp4",
+    "art-of-giving": "assets/films/art-of-giving.mp4",
+    "together-always": "assets/films/together-always.mp4",
+    "extraordinary-gatherings": "assets/films/extraordinary-gatherings.mp4",
+    "tree-of-life": "assets/films/tree-of-life.mp4"
+  }
+}
