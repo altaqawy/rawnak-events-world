@@ -46,7 +46,7 @@ const $=id=>document.getElementById(id), clamp=(x,a,b)=>Math.max(a,Math.min(b,x)
 const sections=[...document.querySelectorAll(".chapter")],links=[...document.querySelectorAll("[data-nav]")],films=[$("film0"),$("film1")],reduced=matchMedia("(prefers-reduced-motion: reduce)");
 const manifest=new Map(),checked=new Map(),slotState=films.map(()=>({chapter:-1,ready:false,token:0}));let current=-1,phase=0,visibleSlot=-1,loadToken=0,raf=0,manifestReady=false;
 const menu=document.querySelector(".menu-toggle");menu.addEventListener("click",()=>{let open=$("nav").classList.toggle("open");menu.setAttribute("aria-expanded",String(open));});document.querySelectorAll(".nav a").forEach(a=>a.addEventListener("click",()=>{$("nav").classList.remove("open");menu.setAttribute("aria-expanded","false");}));
-function jump(i){const el=sections[clamp(i,0,8)];window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-document.querySelector("header").offsetHeight+16,behavior:reduced.matches?"auto":"smooth"});}
+function jump(i){i=clamp(i,0,8);const el=sections[i],leg=Math.max(1,el.clientHeight-(i===8?$("screen").clientHeight:0));window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-document.querySelector("header").offsetHeight+(reduced.matches?16:leg*.30),behavior:reduced.matches?"auto":"smooth"});}
 $("prev").onclick=()=>jump(current-1);$("next").onclick=()=>jump(current+1);
 function showStatus(s){$("mediaStatus").textContent=s;}
 function hideFilm(){films.forEach(v=>v.classList.remove("active"));visibleSlot=-1;$("screen").classList.remove("has-film");}
@@ -70,7 +70,7 @@ function flightPosition(i,p){
  let x=a[0]+(before[0]-a[0])*.40*(1-arrival)+(b[0]-a[0])*.60*departure;
  let y=a[1]+(before[1]-a[1])*.40*(1-arrival)+(b[1]-a[1])*.60*departure;
  if(i===0){y+=90*(1-arrival)}if(i===8){y-=36*departure}
- const zoom=1.18+.68*arrival-.62*departure;
+ const zoom=1.18+.68*arrival-.68*departure;
  return {x,y,zoom};
 }
 const atmos=$("atmosphere"),ctx=atmos.getContext("2d");
@@ -106,7 +106,7 @@ $("mapClose").onclick=()=>{toggleMap(false);$("mapToggle").focus();};
 mapButtons.forEach((b,i)=>b.onclick=()=>{toggleMap(false);jump(i);});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("flightMap").hidden){toggleMap(false);$("mapToggle").focus();}});
 document.querySelector(".map-skip").addEventListener("click",()=>toggleMap(false));
-links.forEach((a,i)=>a.addEventListener("click",e=>{e.preventDefault();jump(i);}));document.querySelectorAll(".index-link").forEach((a,i)=>a.addEventListener("click",e=>{e.preventDefault();jump(i);}));window.addEventListener("scroll",schedule,{passive:true});window.addEventListener("resize",schedule,{passive:true});reduced.addEventListener?.("change",()=>{loadChapter(current<0?0:current);schedule();});
+links.forEach((a,i)=>a.addEventListener("click",e=>{e.preventDefault();jump(i);}));document.querySelectorAll(".index-link").forEach((a,i)=>a.addEventListener("click",e=>{e.preventDefault();jump(i);}));films.forEach(v=>v.addEventListener("seeked",schedule));window.addEventListener("scroll",schedule,{passive:true});window.addEventListener("resize",schedule,{passive:true});reduced.addEventListener?.("change",()=>{loadChapter(current<0?0:current);schedule();});
 fetch("assets/films/manifest.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).then(data=>{chapters.forEach((c,i)=>{let e=data?.chapters?.[c.slug];if(typeof e==="string"&&e.trim())manifest.set(i,e);});}).catch(()=>{}).finally(()=>{manifestReady=true;loadChapter(current<0?0:current);});
 document.querySelectorAll("[data-interest]").forEach(a=>a.addEventListener("click",()=>{$("interest").value=a.dataset.interest;}));
 $("copyBrief").onclick=async()=>{const message="Hello Rawnak Events! I’m interested in "+$("interest").value+"."+( $("details").value.trim()?"\n"+$("details").value.trim():"");try{await navigator.clipboard.writeText(message);$("contactStatus").textContent="Brief copied. You can now share it with Rawnak.";}catch(e){$("details").value=message;$("details").focus();$("details").select();$("contactStatus").textContent="Select and copy the prepared brief manually.";}};$("year").textContent=new Date().getFullYear();update();
