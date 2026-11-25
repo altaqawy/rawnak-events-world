@@ -289,7 +289,7 @@
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let renderer, scene, camera, root, mixer, waterTextures = [], petalSprites = [], cloudSprites = [];
     let pathCurve, cameraSamples = null, targetProgress = 0, currentProgress = 0, lastTime = 0;
-    let loaded = false, webglAvailable = true;
+    let loaded = false, webglAvailable = true, modelFailed = false;
     const journey = $('journey');
 
     function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
@@ -392,7 +392,7 @@
         if(!obj.isMesh)return;
         obj.castShadow=false;obj.receiveShadow=false;obj.frustumCulled=true;
         const n=(obj.name||'').toLowerCase();
-        if(n.includes('rawnak_globalfog') || n.includes('globalfog_v2')){
+        if(n.includes('rawnak_globalfog') || n.includes('globalfog_v2') || /cloud|mist|fog|spray/.test(n)){
           obj.visible=false;
           return;
         }
@@ -504,8 +504,10 @@
       buildRail();
 
       const loader=new GLTFLoader();
+      const modelPaths=['./Untitled.glb','./assets/rawnak-events-world.glb'];
+      function loadModel(index=0){
       loader.load(
-        './assets/rawnak-events-world.glb',
+        modelPaths[index],
         gltf=>{
           enhanceModel(gltf);
           loaded=true;
@@ -519,11 +521,17 @@
           if(event.total) $('loaderFill').style.width=Math.round(event.loaded/event.total*88)+'%';
         },
         error=>{
-          console.error('RAWNAK model failed to load',error);
+          console.error('RAWNAK model failed to load',modelPaths[index],error);
+          if(index+1<modelPaths.length){loadModel(index+1);return;}
+          modelFailed=true;
+          $('sceneStatus').textContent='3D ASSET / LOAD FAILED';
+          $('webglError').textContent='3D world could not load. Please refresh or check the model file.';
           $('webglError').style.display='block';
           $('loader').classList.add('done');
         }
       );
+      }
+      loadModel();
     }
 
     function updateSceneVisibility(){
@@ -531,7 +539,7 @@
       const journeyRect=journey.getBoundingClientRect();
       const visible=(heroRect.bottom>0 && heroRect.top<innerHeight) || (journeyRect.bottom>0 && journeyRect.top<innerHeight);
       canvas.style.opacity=visible&&loaded?'1':'0';
-      $('sceneStatus').textContent=loaded?'REAL-TIME 3D / ENGINE ONLINE':'REAL-TIME 3D / LOADING';
+      $('sceneStatus').textContent=loaded?'REAL-TIME 3D / ENGINE ONLINE':modelFailed?'3D ASSET / LOAD FAILED':!webglAvailable?'WEBGL UNAVAILABLE':'REAL-TIME 3D / LOADING';
     }
 
     function animate(now){
