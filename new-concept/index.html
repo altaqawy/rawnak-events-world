@@ -24,6 +24,65 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
 @media(max-width:960px){.wrap{width:calc(100% - 48px)}.hero{height:auto;min-height:1000px}.hero-top{grid-template-columns:1fr .8fr;gap:3%;padding-top:145px}.hero h1{font-size:clamp(55px,8vw,86px)}.hero-side{min-height:340px}.cube-scene{transform:scale(.85)}.story-card{width:250px;height:305px}.manifesto-inner{grid-template-columns:.42fr 1.58fr;gap:5%}.service{grid-template-columns:48px 1fr 1fr 38px;gap:15px}.story-layout,.events-grid{gap:5%}.story-visual{min-height:430px}.event-visual{min-height:420px}.concierge-inner{gap:5%}}
 @media(max-width:680px){.wrap{width:calc(100% - 36px)}.topbar{height:70px}.brand-mark{width:30px;height:30px}.brand-name{font-size:13px}.menu-toggle{display:grid;place-items:center}.nav{display:none;position:absolute;top:69px;inset-inline:0;background:#2b1924;padding:18px 22px 24px;border-bottom:1px solid #ffffff24;flex-direction:column;align-items:stretch;gap:0;box-shadow:0 18px 30px #120b12aa}.nav.open{display:flex}.nav a{padding:14px 0;border-bottom:1px solid #ffffff1c;font-size:12px}.top-actions .btn{display:none}.hero{min-height:1120px;height:auto}.hero-top{display:flex;flex-direction:column;align-items:stretch;padding-top:125px;gap:5px}.hero-copy{order:1}.hero-side{order:0;min-height:235px;margin-bottom:14px}.cube-scene{transform:scale(.62)}.cube-caption{bottom:-6px}.orbit-line{transform:scale(.75) rotate(-26deg)}.hero h1{font-size:clamp(55px,14vw,76px);margin-bottom:18px}.hero-lead{font-size:12px;max-width:370px}.hero-copy .eyebrow{margin-bottom:20px}.hero-buttons .btn{min-height:45px;padding:0 15px}.strip-wrap{margin-top:38px}.strip-head{align-items:start;gap:12px;flex-direction:column}.story-card{width:230px;height:290px}.story-meta h3{font-size:20px}.story-meta p{font-size:9px}.strip-count{font-size:10px}.manifesto{padding:95px 0 100px}.manifesto-inner{display:block}.manifesto-aside{margin-bottom:28px}.manifesto h2{font-size:clamp(35px,10vw,53px)}.manifesto p.copy{font-size:12px}.services,.story-section,.events{padding:90px 0}.services-head{display:block;margin-bottom:35px}.services-head .section-copy{margin-top:18px}.service{grid-template-columns:32px 1fr 32px;gap:12px;padding:22px 0}.service p{grid-column:2;grid-row:2}.service-icon{grid-column:3;grid-row:1/3;width:31px;height:31px}.service h3{font-size:17px}.story-layout,.events-grid{grid-template-columns:1fr;gap:35px}.story-visual{min-height:350px;order:2}.story-copy{order:1}.process{padding:90px 0}.process-head{margin-bottom:45px}.steps{grid-template-columns:1fr 1fr;row-gap:35px}.step{padding:0 16px}.step:nth-child(2){border:0}.step h3{font-size:15px;margin-top:14px}.step p{font-size:10px}.event-visual{min-height:340px;order:2}.event-copy{order:1}.concierge{padding:90px 0}.concierge-inner{grid-template-columns:1fr;gap:35px}.concierge h2{font-size:46px}.request-card{padding:22px}.footer{padding:52px 0 24px}.footer-main{grid-template-columns:1fr 1fr;gap:32px 20px}.footer-main>div:first-child{grid-column:1/-1}.footer-bottom{flex-direction:column;gap:9px}.story-modal{padding:12px}.modal-panel{grid-template-columns:1fr;max-height:90svh;overflow:auto}.modal-image{min-height:190px;height:190px}.modal-copy{padding:27px 23px}.modal-copy h3{font-size:30px}.modal-copy p{font-size:11px}.modal-close{top:9px;inset-inline-end:9px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* Gobo-inspired WebGL story ribbon */
+.hero{height:min(1000px,100svh);min-height:820px;background:#0b0a0f;color:#f3f3f1;isolation:isolate}
+.hero:before,.hero:after{display:none}
+.topbar{background:linear-gradient(180deg,#0b0a0fdd,transparent);border-bottom-color:#ffffff12}
+.gobo-stage{position:absolute;inset:0;z-index:1;overflow:hidden;background:#0b0a0f}
+#goboCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;outline:none;touch-action:none;cursor:grab}
+#goboCanvas:active{cursor:grabbing}
+.gobo-labels{position:absolute;inset:0;pointer-events:none;z-index:2}
+.gobo-label{position:absolute;min-width:110px;max-width:190px;color:#efeeea;font:500 8px/1.5 "DM Sans",monospace;letter-spacing:.11em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity .2s}
+.gobo-label small{display:block;color:#9c989e;font:500 7px/1.5 "DM Sans",monospace;letter-spacing:.12em}
+.gobo-label strong{display:block;overflow:hidden;text-overflow:ellipsis;font:500 9px/1.5 "DM Sans",sans-serif;letter-spacing:.01em;text-transform:none}
+.gobo-hint{position:absolute;top:112px;inset-inline-start:26px;z-index:3;color:#77747e;font:500 8px/1.5 "DM Sans",monospace;letter-spacing:.14em;text-transform:uppercase;pointer-events:none}
+.gobo-active{position:absolute;right:27px;bottom:34px;z-index:3;display:flex;flex-direction:column;align-items:flex-end;gap:7px;color:#f3f3f1;pointer-events:none;text-align:right}
+.gobo-active small{font:500 8px "DM Sans",monospace;letter-spacing:.15em;color:#9d9aa2}
+.gobo-active strong{font:500 clamp(18px,2.1vw,30px)/1.15 "DM Sans",sans-serif;letter-spacing:-.05em;max-width:300px}
+.gobo-progress{position:absolute;right:18px;top:40%;height:130px;width:1px;background:#ffffff25;z-index:3}
+.gobo-progress i{position:absolute;top:0;left:0;width:1px;height:18%;background:#d3b28b;transition:height .2s}
+.hero-top{position:absolute;inset:0;width:100%;max-width:none;height:100%;padding:0;margin:0;display:block;z-index:4;pointer-events:none}
+.hero-copy{position:absolute;bottom:30px;inset-inline-start:26px;max-width:min(490px,42vw);pointer-events:auto}
+.hero-copy .eyebrow{margin-bottom:13px;color:#bda17e;font-size:8px}
+.hero h1{font-size:clamp(38px,4.6vw,66px);line-height:1.02;letter-spacing:-.07em;margin:0 0 13px}
+.hero h1 em{color:#c4a47b}
+.hero-lead{font-size:10px;line-height:1.9;color:#aaa5ac;max-width:410px;margin:0 0 15px}
+.hero-buttons{gap:8px}
+.hero-buttons .btn{min-height:38px;padding:0 14px;font-size:9px}
+.hero-side{position:absolute;left:50%;bottom:102px;transform:translateX(-50%);width:150px;height:150px;min-height:0;display:grid;place-items:center;pointer-events:auto}
+.cube-scene{width:150px;height:150px;transform:scale(.47)}
+.cube-glow{width:190px;height:190px;background:radial-gradient(circle,#d1a97920,transparent 70%)}
+.cube{animation:cubeIdle 21s ease-in-out infinite}
+.cube-core{position:absolute;left:50%;top:50%;width:35px;height:13px;margin:-6px 0 0 -17px;border-radius:100%;background:linear-gradient(135deg,#fff,#c9c6d0 55%,#817e8c);box-shadow:0 0 24px #f2e8ff8c,0 0 5px #fff;transform:translateZ(5px) rotate(-28deg);pointer-events:none}
+.cube-caption{bottom:-13px;font-size:9px;white-space:nowrap}
+.hero-index{z-index:3;top:43%;inset-inline-end:19px;font:500 8px "DM Sans",monospace;letter-spacing:.14em;color:#77747e}
+.mobile-story-list{display:none}
+@media(max-width:960px) and (min-width:681px){.hero-copy{max-width:430px}.hero h1{font-size:54px}.hero-side{bottom:90px}}
+@media(max-width:680px){
+ .hero{height:auto;min-height:690px}
+ .gobo-stage{display:none}
+ .hero-top{position:relative;inset:auto;width:100%;height:690px;padding:0;margin:0;display:block}
+ .hero-copy{bottom:27px;inset-inline:19px;max-width:none;text-align:start}
+ .hero h1{font-size:clamp(42px,12vw,58px);margin-bottom:13px}
+ .hero-lead{font-size:11px;max-width:420px;margin-bottom:17px}
+ .hero-side{left:auto;right:21px;top:89px;bottom:auto;transform:none;width:110px;height:110px}
+ .cube-scene{transform:scale(.32)}
+ .cube-caption{font-size:8px;bottom:-8px}
+ .hero-index{top:180px;inset-inline-end:18px;font-size:7px}
+ .mobile-story-list{display:block;background:#0b0a0f;color:#f3f3f1;padding:34px 18px 70px}
+ .mobile-story-head{margin-bottom:24px}
+ .mobile-story-head .eyebrow{color:#c4a47b}
+ .mobile-story-head p{font-size:11px;color:#9f969f;line-height:1.8;margin:12px 0 0}
+ .mobile-story-cards{display:flex;flex-direction:column;gap:18px}
+ .mobile-story-cards .story-card{width:100%;height:clamp(240px,72vw,320px);min-height:240px;transform:none!important;direction:rtl}
+ .mobile-story-cards .story-card img{filter:saturate(.82)}
+ .mobile-story-cards .story-meta{bottom:20px;inset-inline:20px}
+ .mobile-story-cards .story-meta h3{font-size:22px}
+ .mobile-story-cards .story-meta p{font-size:10px}
+ .mobile-story-cards .story-open{opacity:1}
+}
+
 </style>
 </head>
 <body>
@@ -34,6 +93,13 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
 </header>
 <main>
 <section class="hero" id="home">
+ <div class="gobo-stage" id="stories">
+  <canvas id="goboCanvas" tabindex="0" aria-label="Selected stories. Drag, scroll or use the arrow keys."></canvas>
+  <div class="gobo-labels" id="goboLabels" aria-hidden="true"></div>
+  <div class="gobo-hint"><span data-ar="اسحب أو مرّر لاستكشاف الحكايات" data-en="DRAG · SCROLL · ARROW KEYS">اسحب أو مرّر لاستكشاف الحكايات</span></div>
+  <div class="gobo-active" id="goboActive"><small>01 / CARE</small><strong data-ar="لأن سلامتك تهمني." data-en="Because your safety matters.">لأن سلامتك تهمني.</strong></div>
+  <div class="gobo-progress"><i id="goboProgress"></i></div>
+ </div>
  <div class="wrap hero-top">
   <div class="hero-copy">
    <div class="eyebrow" data-ar="فن الاهتمام — برؤية مختلفة" data-en="THE ART OF THOUGHTFUL GIVING">فن الاهتمام — برؤية مختلفة</div>
@@ -42,25 +108,21 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
    <div class="hero-buttons"><a class="btn" href="#stories"><span data-ar="اكتشف الحكايات" data-en="Explore the stories">اكتشف الحكايات</span><span class="arrow">↗</span></a><a class="btn btn-outline" href="#concierge"><span data-ar="احكي لنا عنه" data-en="Tell us about them">احكي لنا عنه</span></a></div>
   </div>
   <div class="hero-side" id="cubeArea" aria-label="Interactive three-dimensional RAWNAK emblem">
-   <div class="orbit-line"></div><div class="orbit-line two"></div><div class="orbit-line three"></div><div class="cube-glow"></div>
-   <div class="cube-scene"><div class="cube" id="brandCube"><div class="face front">R</div><div class="face back">✳</div><div class="face right">R</div><div class="face left">✳</div><div class="face top">✧</div><div class="face bottom">R</div></div></div>
+   <div class="cube-glow"></div>
+   <div class="cube-scene"><div class="cube" id="brandCube"><div class="face front">R</div><div class="face back">✳</div><div class="face right">R</div><div class="face left">✳</div><div class="face top">✧</div><div class="face bottom">R</div><div class="cube-core"></div></div></div>
    <div class="cube-caption" data-ar="كل حكاية تبدأ باهتمام." data-en="Every story begins with care.">كل حكاية تبدأ باهتمام.</div>
-   <div class="hero-index">01 — RAWNAK / EVENTS</div>
   </div>
  </div>
- <div class="wrap strip-wrap" id="stories">
-  <div class="strip-head"><div class="strip-title" data-ar="ست حكايات. ومعانٍ لا حصر لها." data-en="SIX STORIES. ENDLESS MEANING.">ست حكايات. ومعانٍ لا حصر لها.</div><div class="strip-hint" data-ar="اسحب • مرر • اختر حكاية" data-en="DRAG · SCROLL · SELECT A STORY">اسحب • مرر • اختر حكاية</div></div>
-  <div class="story-viewport" id="storyViewport" tabindex="0" aria-label="Interactive stories carousel">
-   <div class="story-track" id="storyTrack">
-    <article class="story-card" tabindex="0" role="button" data-story="care"><img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=82" alt="A motorcycle journey at dusk" fetchpriority="high"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>01 / CARE</small><h3 data-ar="لأن سلامتك تهمني." data-en="Because your safety matters.">لأن سلامتك تهمني.</h3><p data-ar="اهتمام يظهر في التفاصيل التي تحمي من نحب." data-en="Care expressed through the details that protect the people we love.">اهتمام يظهر في التفاصيل التي تحمي من نحب.</p></div></article>
+ <div class="hero-index">01 — RAWNAK / EVENTS</div>
+</section>
+<section class="mobile-story-list" id="mobileStories">
+ <div class="mobile-story-head"><div class="eyebrow" data-ar="حكايات من رونق" data-en="STORIES BY RAWNAK">حكايات من رونق</div><p data-ar="كل شخص له حكاية. وكل حكاية تستحق اهتمام." data-en="Every person has a story. Every story deserves care.">كل شخص له حكاية. وكل حكاية تستحق اهتمام.</p></div>
+ <div class="mobile-story-cards">    <article class="story-card" tabindex="0" role="button" data-story="care"><img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=82" alt="A motorcycle journey at dusk" fetchpriority="high"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>01 / CARE</small><h3 data-ar="لأن سلامتك تهمني." data-en="Because your safety matters.">لأن سلامتك تهمني.</h3><p data-ar="اهتمام يظهر في التفاصيل التي تحمي من نحب." data-en="Care expressed through the details that protect the people we love.">اهتمام يظهر في التفاصيل التي تحمي من نحب.</p></div></article>
     <article class="story-card" tabindex="0" role="button" data-story="believe"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=900&q=82" alt="A person working on a technical project" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>02 / BELIEVE</small><h3 data-ar="أنا مؤمن بحلمك." data-en="I believe in your dream.">أنا مؤمن بحلمك.</h3><p data-ar="أحيانًا أفضل دعم هو بداية الطريق." data-en="Sometimes the best support is a meaningful first step.">أحيانًا أفضل دعم هو بداية الطريق.</p></div></article>
     <article class="story-card" tabindex="0" role="button" data-story="create"><img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=82" alt="Creative art and making" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>03 / CREATE</small><h3 data-ar="خلّي شغفك يكبر." data-en="Let your passion grow.">خلّي شغفك يكبر.</h3><p data-ar="للي بيصنعوا ويبتكروا ويحولوا الأفكار لحقيقة." data-en="For the makers, creators and people who turn ideas into reality.">للي بيصنعوا ويبتكروا ويحولوا الأفكار لحقيقة.</p></div></article>
     <article class="story-card" tabindex="0" role="button" data-story="celebrate"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=82" alt="A celebration filled with light" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>04 / CELEBRATE</small><h3 data-ar="اللحظة دي تستاهل." data-en="This moment deserves to shine.">اللحظة دي تستاهل.</h3><p data-ar="نحتفل بالبدايات والإنجازات واللحظات المهمة." data-en="Celebrate beginnings, achievements and moments that matter.">نحتفل بالبدايات والإنجازات واللحظات المهمة.</p></div></article>
     <article class="story-card" tabindex="0" role="button" data-story="remember"><img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=900&q=82" alt="Friends sharing a meaningful moment" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>05 / REMEMBER</small><h3 data-ar="فاكر تفاصيلنا." data-en="I remember the little things.">فاكر تفاصيلنا.</h3><p data-ar="تفصيلة صغيرة ممكن تختصر حكاية كبيرة." data-en="A little detail can hold an entire story.">تفصيلة صغيرة ممكن تختصر حكاية كبيرة.</p></div></article>
-    <article class="story-card" tabindex="0" role="button" data-story="experience"><img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=82" alt="People sharing a collaborative experience" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>06 / EXPERIENCE</small><h3 data-ar="عيش حكاية جديدة." data-en="Live a new story.">عيش حكاية جديدة.</h3><p data-ar="مش كل هدية شيء يتغلف؛ بعضها تجربة تعيش معاك." data-en="Not every gift comes wrapped. Some become memories you live.">مش كل هدية شيء يتغلف؛ بعضها تجربة تعيش معاك.</p></div></article>
-   </div>
-  </div>
-  <div class="strip-controls"><div class="progress-line" id="progressLine" role="slider" aria-label="Story strip progress" tabindex="0"><div class="progress-fill" id="progressFill"></div></div><div class="strip-count" id="stripCount">01 / 06</div><div class="strip-arrows"><button id="prevStory" type="button" aria-label="Previous story">←</button><button id="nextStory" type="button" aria-label="Next story">→</button></div></div>
+    <article class="story-card" tabindex="0" role="button" data-story="experience"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=82" alt="People sharing a collaborative experience" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>06 / EXPERIENCE</small><h3 data-ar="عيش حكاية جديدة." data-en="Live a new story.">عيش حكاية جديدة.</h3><p data-ar="مش كل هدية شيء يتغلف؛ بعضها تجربة تعيش معاك." data-en="Not every gift comes wrapped. Some become memories you live.">مش كل هدية شيء يتغلف؛ بعضها تجربة تعيش معاك.</p></div></article>
  </div>
 </section>
 <section class="manifesto" id="philosophy"><div class="wrap manifesto-inner">
@@ -105,31 +167,91 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
  <div class="footer-bottom"><span>© 2026 RAWNAK EVENTS. ALL RIGHTS RESERVED.</span><span data-ar="صُنع باهتمام." data-en="Made with care.">صُنع باهتمام.</span></div>
 </div></footer>
 <div class="story-modal" id="storyModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-panel"><button class="modal-close" id="modalClose" aria-label="Close story">×</button><div class="modal-image"><img id="modalImage" src="" alt=""></div><div class="modal-copy"><small id="modalKicker">01 / CARE</small><h3 id="modalTitle">A story of care</h3><p id="modalText"></p><a class="btn" href="#concierge" id="modalCta"><span data-ar="ابدأ حكايتك" data-en="Start your story">ابدأ حكايتك</span><span class="arrow">↗</span></a></div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
 const root=document.documentElement,langBtn=document.getElementById('langBtn'),nav=document.getElementById('nav'),menuToggle=document.getElementById('menuToggle');let lang='ar';
 const translations={care:{k:'01 / CARE',ar:['لأن سلامتك تهمني.','الاهتمام الحقيقي يظهر في التفاصيل التي تحمي من نحب. مش لازم تكون الهدية كبيرة؛ المهم إنها تقول: عايزك دايمًا بخير.'],en:['Because your safety matters.','Real care lives in the details that protect the people we love. The gesture does not have to be grand; it simply says: I want you safe.']},believe:{k:'02 / BELIEVE',ar:['أنا مؤمن بحلمك.','في أوقات كتير، أفضل هدية هي حاجة تساعد شخص ياخد خطوته الجاية. دعم حلمه معناه إنك شايف إمكانياته قبل ما يوصل.'],en:['I believe in your dream.','Sometimes the best gift is something that helps someone take their next step. Supporting a dream means seeing their potential before they reach it.']},create:{k:'03 / CREATE',ar:['خلّي شغفك يكبر.','للناس اللي بتحب تصنع وتبتكر وتتعلم. الهدية ممكن تكون أداة تفتح باب لفكرة جديدة أو مساحة أكبر للإبداع.'],en:['Let your passion grow.','For people who love making, inventing and learning. A gift can be a tool that opens the door to a new idea or a wider space for creativity.']},celebrate:{k:'04 / CELEBRATE',ar:['اللحظة دي تستاهل.','في لحظات تستحق أكتر من تهنئة سريعة. نساعدك تخلي البداية أو النجاح أو المناسبة ذكرى متصممة بعناية.'],en:['This moment deserves to shine.','Some moments deserve more than a quick congratulations. We help turn a beginning, achievement or occasion into a memory shaped with care.']},remember:{k:'05 / REMEMBER',ar:['فاكر تفاصيلنا.','أجمل المفاجآت ساعات بتبدأ من تفصيلة صغيرة افتكرتها. حاجة تقول للشخص إنك كنت بتسمع وبتلاحظ وبتفتكر.'],en:['I remember the little things.','The most meaningful surprises often begin with one small detail you remembered. A way to say you were listening, noticing and remembering.']},experience:{k:'06 / EXPERIENCE',ar:['عيش حكاية جديدة.','مش كل الهدايا بتتحط على رف. بعضها بيتعاش: تجربة مشتركة، مغامرة، تعلم شيء جديد أو وقت معمول مخصوص لشخص بتحبه.'],en:['Live a new story.','Not every gift belongs on a shelf. Some are lived: a shared experience, an adventure, learning something new or time created for someone you love.']}};
-function setLang(next){lang=next;root.lang=next;root.dir=next==='ar'?'rtl':'ltr';document.querySelectorAll('[data-ar][data-en]').forEach(el=>{el.innerHTML=el.dataset[next]});langBtn.textContent=next==='ar'?'EN / عربي':'عربي / EN';document.getElementById('details').placeholder=next==='ar'?'إيه اللي بيحبه؟ بيشتغل إيه؟ بيحلم بإيه؟':'What do they love? What do they do? What do they dream of?';const opts={who:next==='ar'?['اختار','شريك الحياة','صديق أو صديقة','أحد أفراد العائلة','زميل أو فريق عمل','مؤسسة أو شركة','شخص آخر']:['Choose','Partner','Friend','Family member','Colleague or team','Company or organization','Someone else'],occasion:next==='ar'?['اختار','اهتمام وسلامة','دعم حلم أو شغف','تقدير وإنجاز','ذكرى أو مناسبة','مفاجأة بدون مناسبة','طلب خاص للمؤسسة']:['Choose','Care & safety','Support a dream or passion','Recognition & achievement','Memory or occasion','A surprise for no occasion','Corporate request'],budget:next==='ar'?['لسه مش محدد','أقل من 500 جنيه','500 – 1,500 جنيه','1,500 – 5,000 جنيه','5,000 – 15,000 جنيه','أكثر من 15,000 جنيه','حسب الفكرة']:['Not decided','Under EGP 500','EGP 500 – 1,500','EGP 1,500 – 5,000','EGP 5,000 – 15,000','Above EGP 15,000','Depends on the idea']};Object.keys(opts).forEach(id=>{const el=document.getElementById(id);Array.from(el.options).forEach((o,i)=>{if(opts[id][i])o.textContent=opts[id][i]})});}
+function setLang(next){lang=next;root.lang=next;root.dir=next==='ar'?'rtl':'ltr';document.querySelectorAll('[data-ar][data-en]').forEach(el=>{el.innerHTML=el.dataset[next]});langBtn.textContent=next==='ar'?'EN / عربي':'عربي / EN';document.getElementById('details').placeholder=next==='ar'?'إيه اللي بيحبه؟ بيشتغل إيه؟ بيحلم بإيه؟':'What do they love? What do they do? What do they dream of?';const opts={who:next==='ar'?['اختار','شريك الحياة','صديق أو صديقة','أحد أفراد العائلة','زميل أو فريق عمل','مؤسسة أو شركة','شخص آخر']:['Choose','Partner','Friend','Family member','Colleague or team','Company or organization','Someone else'],occasion:next==='ar'?['اختار','اهتمام وسلامة','دعم حلم أو شغف','تقدير وإنجاز','ذكرى أو مناسبة','مفاجأة بدون مناسبة','طلب خاص للمؤسسة']:['Choose','Care & safety','Support a dream or passion','Recognition & achievement','Memory or occasion','A surprise for no occasion','Corporate request'],budget:next==='ar'?['لسه مش محدد','أقل من 500 جنيه','500 – 1,500 جنيه','1,500 – 5,000 جنيه','5,000 – 15,000 جنيه','أكثر من 15,000 جنيه','حسب الفكرة']:['Not decided','Under EGP 500','EGP 500 – 1,500','EGP 1,500 – 5,000','EGP 5,000 – 15,000','Above EGP 15,000','Depends on the idea']};Object.keys(opts).forEach(id=>{const el=document.getElementById(id);Array.from(el.options).forEach((o,i)=>{if(opts[id][i])o.textContent=opts[id][i]})});if(window.updateGoboLanguage)window.updateGoboLanguage(next);}
 langBtn.addEventListener('click',()=>setLang(lang==='ar'?'en':'ar'));menuToggle.addEventListener('click',()=>nav.classList.toggle('open'));nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
-const viewport=document.getElementById('storyViewport'),track=document.getElementById('storyTrack'),cards=Array.from(track.querySelectorAll('.story-card')),progress=document.getElementById('progressFill'),count=document.getElementById('stripCount'),progressLine=document.getElementById('progressLine');let dragging=false,startX=0,startScroll=0,lastPointer=0,dragMoved=false,suppressClick=false,auto=true,lastTime=0,raf=0;
-function updateRail(){const max=Math.max(1,viewport.scrollWidth-viewport.clientWidth),pct=viewport.scrollLeft/max;progress.style.width=(pct*100)+'%';const active=Math.min(cards.length,Math.max(1,Math.round(pct*(cards.length-1))+1));count.textContent=String(active).padStart(2,'0')+' / '+String(cards.length).padStart(2,'0');const center=viewport.getBoundingClientRect().left+viewport.clientWidth/2;cards.forEach(card=>{const r=card.getBoundingClientRect(),mid=r.left+r.width/2,dist=(mid-center)/(viewport.clientWidth*.75),clamp=Math.max(-1,Math.min(1,dist));card.style.transform='perspective(1000px) rotateY('+(clamp*-8)+'deg) scale('+(1-Math.abs(clamp)*.045)+')';});}
-function animateRail(t){if(!lastTime)lastTime=t;const dt=Math.min(40,t-lastTime);lastTime=t;if(auto&&!dragging&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const max=viewport.scrollWidth-viewport.clientWidth;if(max>0){viewport.scrollLeft+=dt*.013;if(viewport.scrollLeft>=max-1)viewport.scrollLeft=0;}}updateRail();raf=requestAnimationFrame(animateRail);}
-viewport.addEventListener('scroll',updateRail,{passive:true});viewport.addEventListener('mouseenter',()=>auto=false);viewport.addEventListener('mouseleave',()=>{if(!dragging)auto=true});viewport.addEventListener('focusin',()=>auto=false);viewport.addEventListener('focusout',()=>auto=true);
-viewport.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;dragging=true;dragMoved=false;auto=false;startX=e.clientX;startScroll=viewport.scrollLeft;lastPointer=e.pointerId;viewport.classList.add('dragging')});
-window.addEventListener('pointermove',e=>{if(!dragging||e.pointerId!==lastPointer)return;const dx=startX-e.clientX;if(Math.abs(dx)>5)dragMoved=true;if(dragMoved)viewport.scrollLeft=startScroll+dx});
-function stopDrag(e){if(!dragging||e.pointerId!==lastPointer)return;dragging=false;viewport.classList.remove('dragging');if(dragMoved){suppressClick=true;setTimeout(()=>suppressClick=false,180)}auto=true}
-window.addEventListener('pointerup',stopDrag);window.addEventListener('pointercancel',stopDrag);
-document.getElementById('prevStory').addEventListener('click',()=>{auto=false;viewport.scrollBy({left:-viewport.clientWidth*.72,behavior:'smooth'});setTimeout(()=>auto=true,2800)});document.getElementById('nextStory').addEventListener('click',()=>{auto=false;viewport.scrollBy({left:viewport.clientWidth*.72,behavior:'smooth'});setTimeout(()=>auto=true,2800)});
-progressLine.addEventListener('click',e=>{const r=progressLine.getBoundingClientRect(),pct=(e.clientX-r.left)/r.width;viewport.scrollTo({left:(viewport.scrollWidth-viewport.clientWidth)*pct,behavior:'smooth'})});
+const cards=Array.from(document.querySelectorAll('.mobile-story-list .story-card'));let suppressClick=false;
 const modal=document.getElementById('storyModal'),modalImg=document.getElementById('modalImage'),modalTitle=document.getElementById('modalTitle'),modalText=document.getElementById('modalText'),modalKicker=document.getElementById('modalKicker'),modalClose=document.getElementById('modalClose');let priorFocus=null;
 function openStory(card){const key=card.dataset.story,data=translations[key];if(!data)return;priorFocus=document.activeElement;const title=card.querySelector('h3').textContent,desc=card.querySelector('p').textContent;modalImg.src=card.querySelector('img').src;modalImg.alt=card.querySelector('img').alt;modalTitle.textContent=lang==='ar'?data.ar[0]:data.en[0];modalText.textContent=lang==='ar'?data.ar[1]:data.en[1];modalKicker.textContent=data.k;modal.classList.add('open');document.body.style.overflow='hidden';modalClose.focus();}
 cards.forEach(card=>{card.addEventListener('click',()=>{if(!suppressClick)openStory(card)});card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openStory(card)}})});
 function closeModal(){modal.classList.remove('open');document.body.style.overflow='';if(priorFocus)priorFocus.focus()}modalClose.addEventListener('click',closeModal);modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal()});document.getElementById('modalCta').addEventListener('click',()=>closeModal());
+
+function initGoboRibbon(){
+ const stage=document.getElementById('stories'),canvas=document.getElementById('goboCanvas');
+ if(!stage||!canvas||!window.THREE||matchMedia('(max-width: 680px)').matches)return;
+ const T=window.THREE,labelsRoot=document.getElementById('goboLabels'),activeRoot=document.getElementById('goboActive'),progress=document.getElementById('goboProgress');
+ const palette=['#9b514d','#426b7b','#b64e37','#b18a3d','#367b70','#76465a'];
+ const data=cards.map((card,i)=>({card,img:card.querySelector('img').src,key:card.dataset.story,title:translations[card.dataset.story].ar[0],en:translations[card.dataset.story].en[0],k:translations[card.dataset.story].k.split('/')[1].trim(),year:String(2026-i)}));
+ const renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
+ renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));renderer.setSize(stage.clientWidth,stage.clientHeight,false);renderer.outputEncoding=T.sRGBEncoding;renderer.setClearColor(0x0b0a0f,1);
+ const scene=new T.Scene();scene.background=new T.Color('#0b0a0f');
+ const camera=new T.PerspectiveCamera(35,stage.clientWidth/stage.clientHeight,.1,100);camera.position.set(0,.05,18);camera.lookAt(0,0,0);
+ const group=new T.Group();scene.add(group);
+ const cardW=2.92,cardH=2.52,spacing=3.5,half=(data.length-1)/2,bandW=30,bandH=3.65;
+ const centerY=x=>.22+.62*Math.sin(x*.17);
+ const centerZ=x=>.42*Math.cos(x*.17);
+ const ribbonGeo=new T.BufferGeometry(),positions=[],colors=[],indices=[];
+ const cols=palette.map(c=>new T.Color(c)),nx=180,ny=12;
+ for(let ix=0;ix<=nx;ix++){
+  const u=ix/nx,x=-bandW/2+u*bandW,ct=u*(cols.length-1),ci=Math.min(cols.length-2,Math.floor(ct)),mix=ct-ci;
+  const color=cols[ci].clone().lerp(cols[ci+1],mix);
+  for(let iy=0;iy<=ny;iy++){
+   const v=iy/ny,y=centerY(x)+(v-.5)*bandH,z=centerZ(x)+(v-.5)*.16;
+   positions.push(x,y,z);
+   const shade=.72+.18*Math.sin(v*Math.PI);colors.push(color.r*shade,color.g*shade,color.b*shade);
+   if(ix<nx&&iy<ny){const a=ix*(ny+1)+iy,b=(ix+1)*(ny+1)+iy;indices.push(a,b,a+1,b,b+1,a+1);}
+  }
+ }
+ ribbonGeo.setAttribute('position',new T.Float32BufferAttribute(positions,3));ribbonGeo.setAttribute('color',new T.Float32BufferAttribute(colors,3));ribbonGeo.setIndex(indices);ribbonGeo.computeVertexNormals();
+ const ribbon=new T.Mesh(ribbonGeo,new T.MeshBasicMaterial({vertexColors:true,side:T.DoubleSide}));group.add(ribbon);
+ const loader=new T.TextureLoader();loader.setCrossOrigin('anonymous');
+ const meshes=[],labelEls=[];
+ data.forEach((d,i)=>{
+  const x=(i-half)*spacing,y=centerY(x),z=centerZ(x)+.14,curve=Math.sin(x*.17);
+  const cardGroup=new T.Group();cardGroup.position.set(x,y,z);cardGroup.rotation.y=-curve*.32;cardGroup.rotation.z=curve*.018;group.add(cardGroup);
+  const back=new T.Mesh(new T.PlaneGeometry(cardW+.13,cardH+.13),new T.MeshBasicMaterial({color:palette[i%palette.length],side:T.DoubleSide}));back.position.z=.035;cardGroup.add(back);
+  const fallback=new T.Mesh(new T.PlaneGeometry(cardW,cardH),new T.MeshBasicMaterial({color:palette[i%palette.length],side:T.DoubleSide}));
+  fallback.position.z=.07;cardGroup.add(fallback);
+  const imageMesh=new T.Mesh(new T.PlaneGeometry(cardW,cardH),new T.MeshBasicMaterial({map:null,color:0xffffff,side:T.DoubleSide,toneMapped:false}));
+  imageMesh.position.z=.075;cardGroup.add(imageMesh);
+  loader.load(d.img,texture=>{
+   texture.encoding=T.sRGBEncoding;texture.minFilter=T.LinearMipmapLinearFilter;texture.magFilter=T.LinearFilter;
+   const img=texture.image,boxAspect=cardW/cardH,imgAspect=img.width/img.height;
+   if(imgAspect>boxAspect){texture.repeat.x=boxAspect/imgAspect;texture.offset.x=(1-texture.repeat.x)/2;}
+   else{texture.repeat.y=imgAspect/boxAspect;texture.offset.y=(1-texture.repeat.y)/2;}
+   imageMesh.material.map=texture;imageMesh.material.needsUpdate=true;fallback.visible=false;
+  },undefined,()=>{imageMesh.visible=false;});
+  meshes.push({group:cardGroup,image:imageMesh,index:i,x,y,z});
+  const label=document.createElement('div');label.className='gobo-label';label.innerHTML='<small>'+String(i+1).padStart(2,'0')+' / '+d.k+'</small><strong></strong>';label.querySelector('strong').textContent=lang==='ar'?d.title:d.en;labelsRoot.appendChild(label);labelEls.push(label);
+ });
+ let current=0,target=0,down=false,dragged=false,startX=0,startTarget=0,lastPointer=0,frame=0,lastActive=-1,disposed=false;
+ const maxScroll=spacing*half;
+ const clamp=n=>Math.max(-maxScroll,Math.min(maxScroll,n));
+ const raycaster=new T.Raycaster(),pointer=new T.Vector2();
+ function resize(){if(disposed)return;const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+ const ro=new ResizeObserver(resize);ro.observe(stage);
+ function setActive(){const idx=Math.max(0,Math.min(data.length-1,Math.round(current/spacing+half)));if(idx!==lastActive){lastActive=idx;activeRoot.querySelector('small').textContent=String(idx+1).padStart(2,'0')+' / '+data[idx].k;activeRoot.querySelector('strong').textContent=lang==='ar'?data[idx].title:data[idx].en;}progress.style.height=((idx+1)/data.length*100)+'%';}
+ function projectLabels(){meshes.forEach((m,i)=>{const p=new T.Vector3(m.x, m.y+cardH/2+.22,m.z+.1);p.x-=current;p.project(camera);const x=(p.x*.5+.5)*stage.clientWidth,y=(-p.y*.5+.5)*stage.clientHeight;const visible=p.z<1&&x>-160&&x<stage.clientWidth+160;labelEls[i].style.left=x+'px';labelEls[i].style.top=y+'px';labelEls[i].style.opacity=visible?'1':'0';});}
+ function render(t){if(disposed)return;frame=requestAnimationFrame(render);current+=(target-current)*.085;group.position.x=-current;group.rotation.y=Math.sin(t*.00022)*.009;camera.position.y=.05+Math.sin(t*.00027)*.025;camera.lookAt(0,0,0);renderer.render(scene,camera);projectLabels();setActive();}
+ function downHandler(e){if(e.button!==undefined&&e.button!==0)return;down=true;dragged=false;startX=e.clientX;startTarget=target;lastPointer=e.pointerId;canvas.setPointerCapture?.(e.pointerId);canvas.focus({preventScroll:true});}
+ function moveHandler(e){if(!down||e.pointerId!==lastPointer)return;const dx=e.clientX-startX;if(Math.abs(dx)>5)dragged=true;if(dragged)target=clamp(startTarget-dx*.018);}
+ function upHandler(e){if(!down||e.pointerId!==lastPointer)return;down=false;if(!dragged){const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;scene.updateMatrixWorld(true);raycaster.setFromCamera(pointer,camera);group.position.x=-current;const hits=raycaster.intersectObjects(meshes.map(m=>m.image),false);if(hits.length){const hit=meshes.find(m=>m.image===hits[0].object);if(hit)openStory(cards[hit.index]);}}}
+ canvas.addEventListener('pointerdown',downHandler);window.addEventListener('pointermove',moveHandler);window.addEventListener('pointerup',upHandler);window.addEventListener('pointercancel',upHandler);
+ canvas.addEventListener('wheel',e=>{e.preventDefault();target=clamp(target+(Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY)*.009);},{passive:false});
+ canvas.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();target=clamp(target+(root.dir==='rtl'?-1:1)*spacing);}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();target=clamp(target+(root.dir==='rtl'?1:-1)*spacing);}else if(e.key==='Home'){e.preventDefault();target=-maxScroll;}else if(e.key==='End'){e.preventDefault();target=maxScroll;}});
+ window.updateGoboLanguage=function(next){labelEls.forEach((el,i)=>{el.querySelector('strong').textContent=next==='ar'?data[i].title:data[i].en;});if(lastActive>=0){activeRoot.querySelector('strong').textContent=next==='ar'?data[lastActive].title:data[lastActive].en;}};
+ if(!matchMedia('(prefers-reduced-motion: reduce)').matches)frame=requestAnimationFrame(render);else{renderer.render(scene,camera);projectLabels();setActive();}
+ window.addEventListener('pagehide',()=>{disposed=true;cancelAnimationFrame(frame);ro.disconnect();renderer.dispose();});
+}
 const cube=document.getElementById('brandCube'),cubeArea=document.getElementById('cubeArea');let cubeX=-23,cubeY=38;cubeArea.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=cubeArea.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;cube.style.animation='none';cube.style.transform='rotateX('+(-y*32-12)+'deg) rotateY('+(x*48+38)+'deg)'});cubeArea.addEventListener('pointerleave',()=>{cube.style.animation='cubeIdle 16s ease-in-out infinite';cube.style.transform=''});
 const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 document.getElementById('requestForm').addEventListener('submit',e=>{e.preventDefault();const who=document.getElementById('who'),occasion=document.getElementById('occasion'),budget=document.getElementById('budget'),details=document.getElementById('details');const lines=lang==='ar'?['طلب جديد إلى RAWNAK EVENTS','لمن: '+who.options[who.selectedIndex].text,'المناسبة أو الرسالة: '+occasion.options[occasion.selectedIndex].text,'التفاصيل: '+(details.value||'لم تُحدد'),'الميزانية: '+(budget.value?budget.options[budget.selectedIndex].text:'غير محددة')]:['New enquiry for RAWNAK EVENTS','For: '+who.options[who.selectedIndex].text,'Occasion or message: '+occasion.options[occasion.selectedIndex].text,'Details: '+(details.value||'Not specified'),'Budget: '+(budget.value?budget.options[budget.selectedIndex].text:'Not specified')];document.getElementById('formResult').textContent=lines.join('\n');document.getElementById('formResult').classList.add('show');document.getElementById('copyBrief').hidden=false;});
 document.getElementById('copyBrief').addEventListener('click',()=>{const txt=document.getElementById('formResult').textContent;navigator.clipboard?.writeText(txt).then(()=>{document.getElementById('copyBrief').textContent=lang==='ar'?'تم النسخ':'Copied'}).catch(()=>{})});
-if(!matchMedia('(prefers-reduced-motion: reduce)').matches)raf=requestAnimationFrame(animateRail);else updateRail();
+initGoboRibbon();
 })();
 </script>
 </body></html>
