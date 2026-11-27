@@ -100,6 +100,23 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
  .mobile-story-intro p{font-size:11px;line-height:2;color:#aaa5ac;max-width:430px;margin:0 0 20px}
 }
 
+
+/* Responsive finishing and graceful WebGL fallback */
+.gobo-label{font-size:9px;max-width:190px}
+.gobo-label small{font-size:8px;letter-spacing:.13em}
+.gobo-fallback{position:absolute;inset:0;display:flex;align-items:center;gap:16px;overflow-x:auto;padding:150px 26px 110px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.gobo-fallback::-webkit-scrollbar{display:none}
+.gobo-fallback .story-card{flex:0 0 clamp(220px,22vw,310px);height:clamp(250px,26vw,350px);scroll-snap-align:center}
+.gobo-fallback-mode .gobo-hint{display:none}
+@media(max-width:680px){
+ .hero{height:0!important;min-height:0!important;overflow:visible}
+ .hero-top{height:0!important}
+ .mobile-story-list{padding:108px 18px 64px}
+ .mobile-story-intro{padding:0 0 32px;border:0;margin:0}
+ .mobile-story-head{margin-bottom:20px;padding-top:24px;border-top:1px solid #ffffff20}
+ .mobile-story-cards .story-card{height:clamp(230px,68vw,285px);min-height:230px}
+}
+
 </style>
 </head>
 <body>
@@ -133,6 +150,12 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
  <div class="hero-index">01 — RAWNAK / EVENTS</div>
 </section>
 <section class="mobile-story-list" id="mobileStories">
+ <div class="mobile-story-intro">
+ <div class="eyebrow" data-ar="فن الاهتمام — برؤية مختلفة" data-en="THE ART OF THOUGHTFUL GIVING">فن الاهتمام — برؤية مختلفة</div>
+ <h2><span data-ar="الهدية تبدأ" data-en="A gift begins">الهدية تبدأ</span><br><em data-ar="بإنك تعرفه." data-en="with knowing.">بإنك تعرفه.</em></h2>
+ <p data-ar="مش بنبدأ بالسؤال: هنشتري إيه؟ بنبدأ بالشخص نفسه. شغفه، أحلامه، تفاصيله الصغيرة، والحاجة اللي ممكن تفرق معاه فعلًا." data-en="We don't begin with “What should we buy?” We begin with the person. Their passions, dreams, little details and the things that would truly matter to them.">مش بنبدأ بالسؤال: هنشتري إيه؟ بنبدأ بالشخص نفسه. شغفه، أحلامه، تفاصيله الصغيرة، والحاجة اللي ممكن تفرق معاه فعلًا.</p>
+ <div class="hero-buttons"><a class="btn" href="#concierge"><span data-ar="احكي لنا عنه" data-en="Tell us about them">احكي لنا عنه</span><span class="arrow">↗</span></a></div>
+</div>
  <div class="mobile-story-head"><div class="eyebrow" data-ar="حكايات من رونق" data-en="STORIES BY RAWNAK">حكايات من رونق</div><p data-ar="كل شخص له حكاية. وكل حكاية تستحق اهتمام." data-en="Every person has a story. Every story deserves care.">كل شخص له حكاية. وكل حكاية تستحق اهتمام.</p></div>
  <div class="mobile-story-cards">    <article class="story-card" tabindex="0" role="button" data-story="care"><img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=82" alt="A motorcycle journey at dusk" fetchpriority="high"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>01 / CARE</small><h3 data-ar="لأن سلامتك تهمني." data-en="Because your safety matters.">لأن سلامتك تهمني.</h3><p data-ar="اهتمام يظهر في التفاصيل التي تحمي من نحب." data-en="Care expressed through the details that protect the people we love.">اهتمام يظهر في التفاصيل التي تحمي من نحب.</p></div></article>
     <article class="story-card" tabindex="0" role="button" data-story="believe"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=900&q=82" alt="A person working on a technical project" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>02 / BELIEVE</small><h3 data-ar="أنا مؤمن بحلمك." data-en="I believe in your dream.">أنا مؤمن بحلمك.</h3><p data-ar="أحيانًا أفضل دعم هو بداية الطريق." data-en="Sometimes the best support is a meaningful first step.">أحيانًا أفضل دعم هو بداية الطريق.</p></div></article>
@@ -141,12 +164,7 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
     <article class="story-card" tabindex="0" role="button" data-story="remember"><img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=900&q=82" alt="Friends sharing a meaningful moment" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>05 / REMEMBER</small><h3 data-ar="فاكر تفاصيلنا." data-en="I remember the little things.">فاكر تفاصيلنا.</h3><p data-ar="تفصيلة صغيرة ممكن تختصر حكاية كبيرة." data-en="A little detail can hold an entire story.">تفصيلة صغيرة ممكن تختصر حكاية كبيرة.</p></div></article>
     <article class="story-card" tabindex="0" role="button" data-story="experience"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=82" alt="People sharing a collaborative experience" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>06 / EXPERIENCE</small><h3 data-ar="عيش حكاية جديدة." data-en="Live a new story.">عيش حكاية جديدة.</h3><p data-ar="مش كل هدية شيء يتغلف؛ بعضها تجربة تعيش معاك." data-en="Not every gift comes wrapped. Some become memories you live.">مش كل هدية شيء يتغلف؛ بعضها تجربة تعيش معاك.</p></div></article>
  </div>
- <div class="mobile-story-intro">
- <div class="eyebrow" data-ar="فن الاهتمام — برؤية مختلفة" data-en="THE ART OF THOUGHTFUL GIVING">فن الاهتمام — برؤية مختلفة</div>
- <h2><span data-ar="الهدية تبدأ" data-en="A gift begins">الهدية تبدأ</span><br><em data-ar="بإنك تعرفه." data-en="with knowing.">بإنك تعرفه.</em></h2>
- <p data-ar="مش بنبدأ بالسؤال: هنشتري إيه؟ بنبدأ بالشخص نفسه. شغفه، أحلامه، تفاصيله الصغيرة، والحاجة اللي ممكن تفرق معاه فعلًا." data-en="We don't begin with “What should we buy?” We begin with the person. Their passions, dreams, little details and the things that would truly matter to them.">مش بنبدأ بالسؤال: هنشتري إيه؟ بنبدأ بالشخص نفسه. شغفه، أحلامه، تفاصيله الصغيرة، والحاجة اللي ممكن تفرق معاه فعلًا.</p>
- <div class="hero-buttons"><a class="btn" href="#concierge"><span data-ar="احكي لنا عنه" data-en="Tell us about them">احكي لنا عنه</span><span class="arrow">↗</span></a></div>
-</div>
+ 
 </section>
 <section class="manifesto" id="philosophy"><div class="wrap manifesto-inner">
  <div class="manifesto-aside"><div class="eyebrow" data-ar="فلسفة رونق" data-en="THE RAWNAK PHILOSOPHY">فلسفة رونق</div><p>02 — BEYOND THE GIFT</p></div>
@@ -208,13 +226,20 @@ function initGoboRibbon(){
  if(!stage||!canvas||!window.THREE||matchMedia('(max-width: 680px)').matches)return;
  const T=window.THREE,labelsRoot=document.getElementById('goboLabels'),activeRoot=document.getElementById('goboActive'),progress=document.getElementById('goboProgress');
  const palette=['#9b514d','#426b7b','#b64e37','#b18a3d','#367b70','#76465a'];
- const data=cards.map((card,i)=>({card,img:card.querySelector('img').src,key:card.dataset.story,title:translations[card.dataset.story].ar[0],en:translations[card.dataset.story].en[0],k:translations[card.dataset.story].k.split('/')[1].trim(),year:String(2026-i)}));
- const renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
+ const data=cards.map((card,i)=>({card,img:card.querySelector('img').src,key:card.dataset.story,title:translations[card.dataset.story].ar[0],en:translations[card.dataset.story].en[0],k:translations[card.dataset.story].k.split('/')[1].trim()}));
+ let renderer;
+ try{renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});}
+ catch(error){
+  stage.classList.add('gobo-fallback-mode');canvas.style.display='none';labelsRoot.style.display='none';activeRoot.style.display='none';
+  const fallback=document.createElement('div');fallback.className='gobo-fallback';fallback.setAttribute('aria-label','Explore RAWNAK stories');
+  cards.forEach(card=>{const clone=card.cloneNode(true);clone.addEventListener('click',()=>openStory(card));fallback.appendChild(clone);});
+  stage.appendChild(fallback);return;
+ }
  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));renderer.setSize(stage.clientWidth,stage.clientHeight,false);renderer.outputEncoding=T.sRGBEncoding;renderer.setClearColor(0x0b0a0f,1);
  const scene=new T.Scene();scene.background=new T.Color('#0b0a0f');
- const camera=new T.PerspectiveCamera(36,stage.clientWidth/stage.clientHeight,.1,100);camera.position.set(0,.05,18.8);camera.lookAt(0,0,0);
+ const camera=new T.PerspectiveCamera(33.5,stage.clientWidth/stage.clientHeight,.1,100);camera.position.set(0,.05,18.8);camera.lookAt(0,0,0);
  const group=new T.Group();scene.add(group);
- const cardW=2.92,cardH=2.52,spacing=3.5,half=(data.length-1)/2,bandW=30,bandH=3.65;
+ const cardW=3.2,cardH=2.76,spacing=3.8,half=(data.length-1)/2,bandW=30,bandH=4.0;
  const centerY=x=>.12+1.18*Math.sin(x*.17)+.16*Math.sin(x*.34);
  const centerZ=x=>.82*Math.cos(x*.17);
  const ribbonGeo=new T.BufferGeometry(),positions=[],colors=[],indices=[];
@@ -258,8 +283,8 @@ function initGoboRibbon(){
  function resize(){if(disposed)return;const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
  const ro=new ResizeObserver(resize);ro.observe(stage);
  function setActive(){const idx=Math.max(0,Math.min(data.length-1,Math.round(current/spacing+half)));if(idx!==lastActive){lastActive=idx;activeRoot.querySelector('small').textContent=String(idx+1).padStart(2,'0')+' / '+data[idx].k;activeRoot.querySelector('strong').textContent=lang==='ar'?data[idx].title:data[idx].en;}progress.style.height=((idx+1)/data.length*100)+'%';}
- function projectLabels(){meshes.forEach((m,i)=>{const p=new T.Vector3(m.x, m.y+cardH/2+.22,m.z+.1);p.x-=current;p.project(camera);const x=(p.x*.5+.5)*stage.clientWidth,y=(-p.y*.5+.5)*stage.clientHeight;const visible=p.z<1&&x>-160&&x<stage.clientWidth+160;labelEls[i].style.left=x+'px';labelEls[i].style.top=y+'px';labelEls[i].style.opacity=visible?'1':'0';});}
- function render(t){if(disposed)return;frame=requestAnimationFrame(render);current+=(target-current)*.085;group.position.x=-current;group.rotation.y=Math.sin(t*.00022)*.009;camera.position.y=.05+Math.sin(t*.00027)*.025;camera.lookAt(0,0,0);renderer.render(scene,camera);projectLabels();setActive();}
+ function projectLabels(){meshes.forEach((m,i)=>{const p=new T.Vector3(m.x-cardW/2, m.y+cardH/2+.24,m.z+.1);p.x-=current;p.project(camera);const x=(p.x*.5+.5)*stage.clientWidth,y=(-p.y*.5+.5)*stage.clientHeight;const visible=p.z<1&&x>-210&&x<stage.clientWidth+210;labelEls[i].style.left=Math.max(12,Math.min(stage.clientWidth-205,x))+'px';labelEls[i].style.top=y+'px';labelEls[i].style.opacity=visible?'1':'0';});}
+ const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;let running=false;function render(t){if(disposed||!running)return;frame=requestAnimationFrame(render);current+=(target-current)*.085;group.position.x=-current;group.rotation.y=reduceMotion?0:Math.sin(t*.00022)*.009;camera.position.y=.05+(reduceMotion?0:Math.sin(t*.00027)*.025);camera.lookAt(0,0,0);renderer.render(scene,camera);projectLabels();setActive();}function startRender(){if(disposed||running)return;running=true;frame=requestAnimationFrame(render);}function stopRender(){running=false;cancelAnimationFrame(frame);}function visibilityChange(){if(document.hidden)stopRender();else startRender();}
  function downHandler(e){if(e.button!==undefined&&e.button!==0)return;down=true;dragged=false;startX=e.clientX;startTarget=target;lastPointer=e.pointerId;canvas.setPointerCapture?.(e.pointerId);canvas.focus({preventScroll:true});}
  function moveHandler(e){if(!down||e.pointerId!==lastPointer)return;const dx=e.clientX-startX;if(Math.abs(dx)>5)dragged=true;if(dragged)target=clamp(startTarget-dx*.018);}
  function upHandler(e){if(!down||e.pointerId!==lastPointer)return;down=false;if(!dragged){const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;scene.updateMatrixWorld(true);raycaster.setFromCamera(pointer,camera);group.position.x=-current;const hits=raycaster.intersectObjects(meshes.map(m=>m.image),false);if(hits.length){const hit=meshes.find(m=>m.image===hits[0].object);if(hit)openStory(cards[hit.index]);}}}
@@ -267,8 +292,8 @@ function initGoboRibbon(){
  canvas.addEventListener('wheel',e=>{e.preventDefault();target=clamp(target+(Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY)*.009);},{passive:false});
  canvas.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();target=clamp(target+(root.dir==='rtl'?-1:1)*spacing);}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();target=clamp(target+(root.dir==='rtl'?1:-1)*spacing);}else if(e.key==='Home'){e.preventDefault();target=-maxScroll;}else if(e.key==='End'){e.preventDefault();target=maxScroll;}});
  window.updateGoboLanguage=function(next){labelEls.forEach((el,i)=>{el.querySelector('strong').textContent=next==='ar'?data[i].title:data[i].en;});if(lastActive>=0){activeRoot.querySelector('strong').textContent=next==='ar'?data[lastActive].title:data[lastActive].en;}};
- if(!matchMedia('(prefers-reduced-motion: reduce)').matches)frame=requestAnimationFrame(render);else{renderer.render(scene,camera);projectLabels();setActive();}
- window.addEventListener('pagehide',()=>{disposed=true;cancelAnimationFrame(frame);ro.disconnect();renderer.dispose();});
+ startRender();document.addEventListener('visibilitychange',visibilityChange);
+ window.addEventListener('pagehide',()=>{disposed=true;stopRender();document.removeEventListener('visibilitychange',visibilityChange);ro.disconnect();renderer.dispose();});
 }
 const cube=document.getElementById('brandCube'),cubeArea=document.getElementById('cubeArea');let cubeX=-23,cubeY=38;cubeArea.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=cubeArea.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;cube.style.animation='none';cube.style.transform='rotateX('+(-y*32-12)+'deg) rotateY('+(x*48+38)+'deg)'});cubeArea.addEventListener('pointerleave',()=>{cube.style.animation='cubeIdle 16s ease-in-out infinite';cube.style.transform=''});
 const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
