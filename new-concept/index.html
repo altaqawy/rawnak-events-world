@@ -51,7 +51,7 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
 .hero-buttons{gap:8px}
 .hero-buttons .btn{min-height:38px;padding:0 14px;font-size:9px}
 .hero-side{position:absolute;left:50%;bottom:102px;transform:translateX(-50%);width:150px;height:150px;min-height:0;display:grid;place-items:center;pointer-events:auto}
-.cube-scene{width:150px;height:150px;transform:scale(.47)}
+.cube-scene{width:150px;height:150px;transform:scale(.55)}
 .cube-glow{width:190px;height:190px;background:radial-gradient(circle,#d1a97920,transparent 70%)}
 .cube{animation:cubeIdle 21s ease-in-out infinite}
 .cube-core{position:absolute;left:50%;top:50%;width:35px;height:13px;margin:-6px 0 0 -17px;border-radius:100%;background:linear-gradient(135deg,#fff,#c9c6d0 55%,#817e8c);box-shadow:0 0 24px #f2e8ff8c,0 0 5px #fff;transform:translateZ(5px) rotate(-28deg);pointer-events:none}
@@ -67,7 +67,7 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
  .hero h1{font-size:clamp(42px,12vw,58px);margin-bottom:13px}
  .hero-lead{font-size:11px;max-width:420px;margin-bottom:17px}
  .hero-side{left:auto;right:21px;top:89px;bottom:auto;transform:none;width:110px;height:110px}
- .cube-scene{transform:scale(.32)}
+ .cube-scene{transform:scale(.36)}
  .cube-caption{font-size:8px;bottom:-8px}
  .hero-index{top:180px;inset-inline-end:18px;font-size:7px}
  .mobile-story-list{display:block;background:#0b0a0f;color:#f3f3f1;padding:34px 18px 70px}
@@ -212,7 +212,7 @@ function initGoboRibbon(){
  const renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));renderer.setSize(stage.clientWidth,stage.clientHeight,false);renderer.outputEncoding=T.sRGBEncoding;renderer.setClearColor(0x0b0a0f,1);
  const scene=new T.Scene();scene.background=new T.Color('#0b0a0f');
- const camera=new T.PerspectiveCamera(35,stage.clientWidth/stage.clientHeight,.1,100);camera.position.set(0,.05,18);camera.lookAt(0,0,0);
+ const camera=new T.PerspectiveCamera(36,stage.clientWidth/stage.clientHeight,.1,100);camera.position.set(0,.05,18.8);camera.lookAt(0,0,0);
  const group=new T.Group();scene.add(group);
  const cardW=2.92,cardH=2.52,spacing=3.5,half=(data.length-1)/2,bandW=30,bandH=3.65;
  const centerY=x=>.12+1.18*Math.sin(x*.17)+.16*Math.sin(x*.34);
@@ -221,11 +221,11 @@ function initGoboRibbon(){
  const cols=palette.map(c=>new T.Color(c)),nx=180,ny=12;
  for(let ix=0;ix<=nx;ix++){
   const u=ix/nx,x=-bandW/2+u*bandW,ct=u*(cols.length-1),ci=Math.min(cols.length-2,Math.floor(ct)),mix=ct-ci;
-  const color=cols[ci].clone().lerp(cols[ci+1],mix);
+  const pos=x/spacing+half,near=Math.max(0,Math.min(cols.length-1,Math.round(pos))),edge=Math.abs(pos-near),color=cols[near].clone();if(edge>.39){const other=cols[Math.max(0,Math.min(cols.length-1,near+(pos>near?1:-1)))];color.lerp(other,Math.min(1,(edge-.39)/.11));}
   for(let iy=0;iy<=ny;iy++){
    const v=iy/ny,y=centerY(x)+(v-.5)*bandH,z=centerZ(x)+(v-.5)*.16;
    positions.push(x,y,z);
-   const shade=.72+.18*Math.sin(v*Math.PI);colors.push(color.r*shade,color.g*shade,color.b*shade);
+   const shade=.9+.1*Math.sin(v*Math.PI);colors.push(color.r*shade,color.g*shade,color.b*shade);
    if(ix<nx&&iy<ny){const a=ix*(ny+1)+iy,b=(ix+1)*(ny+1)+iy;indices.push(a,b,a+1,b,b+1,a+1);}
   }
  }
