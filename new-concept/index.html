@@ -37,7 +37,7 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
 .gobo-label small{display:block;color:#9c989e;font:500 7px/1.5 "DM Sans",monospace;letter-spacing:.12em}
 .gobo-label strong{display:block;overflow:hidden;text-overflow:ellipsis;font:500 9px/1.5 "DM Sans",sans-serif;letter-spacing:.01em;text-transform:none}
 .gobo-hint{position:absolute;top:112px;inset-inline-start:26px;z-index:3;color:#77747e;font:500 8px/1.5 "DM Sans",monospace;letter-spacing:.14em;text-transform:uppercase;pointer-events:none}
-.gobo-active{position:absolute;right:27px;bottom:34px;z-index:3;display:flex;flex-direction:column;align-items:flex-end;gap:7px;color:#f3f3f1;pointer-events:none;text-align:right}
+.gobo-active{position:absolute;left:27px;right:auto;bottom:34px;z-index:3;display:flex;flex-direction:column;align-items:flex-start;gap:7px;color:#f3f3f1;pointer-events:none;text-align:left}
 .gobo-active small{font:500 8px "DM Sans",monospace;letter-spacing:.15em;color:#9d9aa2}
 .gobo-active strong{font:500 clamp(18px,2.1vw,30px)/1.15 "DM Sans",sans-serif;letter-spacing:-.05em;max-width:300px}
 .gobo-progress{position:absolute;right:18px;top:40%;height:130px;width:1px;background:#ffffff25;z-index:3}
@@ -83,6 +83,23 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
  .mobile-story-cards .story-open{opacity:1}
 }
 
+
+.gobo-active{align-items:flex-start!important;text-align:left!important}
+@media(max-width:680px){
+ .hero{height:82px;min-height:82px}
+ .hero-top{height:0;overflow:hidden}
+ .hero-copy,.hero-side,.hero-index{display:none}
+ .mobile-story-list{padding:24px 18px 64px}
+ .mobile-story-head{margin-bottom:20px}
+ .mobile-story-head .eyebrow{font-size:8px}
+ .mobile-story-cards .story-card{height:clamp(220px,65vw,270px);min-height:220px}
+ .mobile-story-intro{padding:45px 0 10px;border-top:1px solid #ffffff20;margin-top:20px}
+ .mobile-story-intro .eyebrow{font-size:8px;color:#c4a47b;margin-bottom:15px}
+ .mobile-story-intro h2{font-size:clamp(42px,12vw,58px);font-weight:400;line-height:1.04;letter-spacing:-.07em;color:#f5eee7;margin:0 0 14px}
+ .mobile-story-intro h2 em{font-family:var(--serif);font-weight:400;color:var(--gold)}
+ .mobile-story-intro p{font-size:11px;line-height:2;color:#aaa5ac;max-width:430px;margin:0 0 20px}
+}
+
 </style>
 </head>
 <body>
@@ -124,6 +141,12 @@ html[dir="ltr"] body{font-family:"DM Sans","Manrope",Arial,sans-serif}html[dir="
     <article class="story-card" tabindex="0" role="button" data-story="remember"><img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=900&q=82" alt="Friends sharing a meaningful moment" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>05 / REMEMBER</small><h3 data-ar="فاكر تفاصيلنا." data-en="I remember the little things.">فاكر تفاصيلنا.</h3><p data-ar="تفصيلة صغيرة ممكن تختصر حكاية كبيرة." data-en="A little detail can hold an entire story.">تفصيلة صغيرة ممكن تختصر حكاية كبيرة.</p></div></article>
     <article class="story-card" tabindex="0" role="button" data-story="experience"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=82" alt="People sharing a collaborative experience" loading="lazy"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span><span class="story-open">↗</span><div class="story-meta"><small>06 / EXPERIENCE</small><h3 data-ar="عيش حكاية جديدة." data-en="Live a new story.">عيش حكاية جديدة.</h3><p data-ar="مش كل هدية شيء يتغلف؛ بعضها تجربة تعيش معاك." data-en="Not every gift comes wrapped. Some become memories you live.">مش كل هدية شيء يتغلف؛ بعضها تجربة تعيش معاك.</p></div></article>
  </div>
+ <div class="mobile-story-intro">
+ <div class="eyebrow" data-ar="فن الاهتمام — برؤية مختلفة" data-en="THE ART OF THOUGHTFUL GIVING">فن الاهتمام — برؤية مختلفة</div>
+ <h2><span data-ar="الهدية تبدأ" data-en="A gift begins">الهدية تبدأ</span><br><em data-ar="بإنك تعرفه." data-en="with knowing.">بإنك تعرفه.</em></h2>
+ <p data-ar="مش بنبدأ بالسؤال: هنشتري إيه؟ بنبدأ بالشخص نفسه. شغفه، أحلامه، تفاصيله الصغيرة، والحاجة اللي ممكن تفرق معاه فعلًا." data-en="We don't begin with “What should we buy?” We begin with the person. Their passions, dreams, little details and the things that would truly matter to them.">مش بنبدأ بالسؤال: هنشتري إيه؟ بنبدأ بالشخص نفسه. شغفه، أحلامه، تفاصيله الصغيرة، والحاجة اللي ممكن تفرق معاه فعلًا.</p>
+ <div class="hero-buttons"><a class="btn" href="#concierge"><span data-ar="احكي لنا عنه" data-en="Tell us about them">احكي لنا عنه</span><span class="arrow">↗</span></a></div>
+</div>
 </section>
 <section class="manifesto" id="philosophy"><div class="wrap manifesto-inner">
  <div class="manifesto-aside"><div class="eyebrow" data-ar="فلسفة رونق" data-en="THE RAWNAK PHILOSOPHY">فلسفة رونق</div><p>02 — BEYOND THE GIFT</p></div>
@@ -192,8 +215,8 @@ function initGoboRibbon(){
  const camera=new T.PerspectiveCamera(35,stage.clientWidth/stage.clientHeight,.1,100);camera.position.set(0,.05,18);camera.lookAt(0,0,0);
  const group=new T.Group();scene.add(group);
  const cardW=2.92,cardH=2.52,spacing=3.5,half=(data.length-1)/2,bandW=30,bandH=3.65;
- const centerY=x=>.22+.62*Math.sin(x*.17);
- const centerZ=x=>.42*Math.cos(x*.17);
+ const centerY=x=>.12+1.18*Math.sin(x*.17)+.16*Math.sin(x*.34);
+ const centerZ=x=>.82*Math.cos(x*.17);
  const ribbonGeo=new T.BufferGeometry(),positions=[],colors=[],indices=[];
  const cols=palette.map(c=>new T.Color(c)),nx=180,ny=12;
  for(let ix=0;ix<=nx;ix++){
@@ -212,7 +235,7 @@ function initGoboRibbon(){
  const meshes=[],labelEls=[];
  data.forEach((d,i)=>{
   const x=(i-half)*spacing,y=centerY(x),z=centerZ(x)+.14,curve=Math.sin(x*.17);
-  const cardGroup=new T.Group();cardGroup.position.set(x,y,z);cardGroup.rotation.y=-curve*.32;cardGroup.rotation.z=curve*.018;group.add(cardGroup);
+  const cardGroup=new T.Group();cardGroup.position.set(x,y,z);cardGroup.rotation.y=-curve*.58;cardGroup.rotation.z=curve*.018;group.add(cardGroup);
   const back=new T.Mesh(new T.PlaneGeometry(cardW+.13,cardH+.13),new T.MeshBasicMaterial({color:palette[i%palette.length],side:T.DoubleSide}));back.position.z=.035;cardGroup.add(back);
   const fallback=new T.Mesh(new T.PlaneGeometry(cardW,cardH),new T.MeshBasicMaterial({color:palette[i%palette.length],side:T.DoubleSide}));
   fallback.position.z=.07;cardGroup.add(fallback);
